@@ -1,0 +1,19 @@
+{
+  "name": "hacknslash",
+  "version": "1.0.0",
+  "description": "little game on JS",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cyraullie/HacknSlash.git"
+  },
+  "author": "CyrilGoldenschue",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cyraullie/HacknSlash/issues"
+  },
+  "homepage": "https://github.com/Cyraullie/HacknSlash#readme"
+}

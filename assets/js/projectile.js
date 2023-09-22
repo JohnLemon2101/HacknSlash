@@ -1,15 +1,24 @@
 document.addEventListener("DOMContentLoaded", function() {
     const player = document.getElementById("perso");
     const map = document.getElementById("game");
-    
+
     const projectile = document.createElement("div");
     projectile.className = "projectile"; // Appliquez des styles CSS pour le projectile
     map.appendChild(projectile);
 
-    var projectileX = 270; // Position X initiale du projectile
-    var projectileY = 200; // Position Y initiale du projectile
-    const limitMax = 450;
-    
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    var projectileX = (windowWidth - parseInt(player.style.width.slice(0, -2))) / 2; // Position X initiale du projectile
+    var projectileY = (windowHeight - parseInt(player.style.height.slice(0, -2))) / 2; // Position Y initiale du projectile
+
+    const limitMaxX = windowWidth - parseInt(player.style.width.slice(0, -2));
+    const limitMaxY = windowHeight - parseInt(player.style.height.slice(0, -2));
+    const limitMin = 0;
+
+    console.log(windowWidth)
+    console.log(windowHeight)
+
     projectile.style.top = projectileY + "px";
     projectile.style.left = projectileX + "px";
 
@@ -17,16 +26,40 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let isShooting = false; // Variable pour suivre si le projectile est en cours de tir
 
+    // Variables pour stocker les coordonnées du point de clic
+    let targetX = 0;
+    let targetY = 0;
+
     function moveProjectile() {
         if (isShooting) {
-            // Déplacez le projectile vers la droite (à titre d'exemple)
-            projectileX += speed; // Ajustez la vitesse du projectile selon vos besoins
-            projectile.style.left = projectileX + "px";
+            // Calcul de la direction entre la position actuelle du projectile et le point de clic
+            const deltaX = targetX - projectileX;
+            const deltaY = targetY - projectileY;
+    
+            // Calcul de la distance totale entre la position actuelle et le point de clic
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-            // Vérifiez si le projectile est sorti de l'écran
-            if (projectileX > limitMax) {
-                console.log(projectileX)
-                console.log("out")
+            // Calcul des composantes de déplacement en fonction de la vitesse
+            const moveX = (deltaX / distance) * speed;
+            const moveY = (deltaY / distance) * speed;
+    
+            // Mise à jour de la position du projectile
+            projectileX += moveX;
+            projectileY += moveY;
+    
+            projectile.style.left = projectileX + "px";
+            projectile.style.top = projectileY + "px";
+    
+            // Vérification si le projectile atteint la fin de la carte
+            if (
+                projectileX > limitMaxX  ||
+                projectileY > limitMaxY  ||
+                projectileX < limitMin  ||
+                projectileY < limitMin 
+            ) {
+                console.log(projectileX);
+                console.log(projectileY);
+                console.log("out");
                 stopShooting();
             } else {
                 requestAnimationFrame(moveProjectile);
@@ -34,16 +67,33 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function startShooting() {
+    function startShooting(x, y) {
         if (!isShooting) {
             projectile.style.display = "block";
 
+            const playerRect = player.getBoundingClientRect();
+
             // Position initiale du projectile (à partir de l'image de base)
-            projectileX = parseInt(player.style.left.slice(0, -2)) + player.offsetWidth;
-           // projectileY = parseInt(player.style.top.slice(0, -2));
-            console.log(projectileY)
+            projectileX = playerRect.left + playerRect.width;
+            projectileY = playerRect.top;
+
             projectile.style.left = projectileX + "px";
-            //projectile.style.top = projectileY + "px";
+            projectile.style.top = projectileY + "px";
+                
+            console.log(x)
+
+            targetX = x;
+            targetY = y;     
+
+            console.log(targetX)
+            console.log(targetY)
+            let finalPosition = calculateFinalPosition(projectileX, projectileY, targetX, targetY)
+            targetX = finalPosition.x;
+            targetY = finalPosition.y; 
+
+            console.log("targetX")
+            console.log(targetX)
+            console.log(targetY)
 
             isShooting = true;
             moveProjectile();
@@ -56,7 +106,46 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
-    document.addEventListener("mousedown", function() {
-        startShooting();
+    map.addEventListener("mousedown", function(event) {
+        
+        
+        startShooting(event.clientX, event.clientY);
     });
+
+    function calculateFinalPosition(projectileX, projectileY, targetX, targetY) {
+        let deltaX = targetX - projectileX;
+        let deltaY = targetY - projectileY;
+    
+        let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+        let moveX = (deltaX / distance) * speed;
+        let moveY = (deltaY / distance) * speed;
+    
+        // Fonction pour mettre à jour la position de la balle jusqu'à la cible
+        function updatePosition() {
+            if (
+                projectileX > limitMin &&
+                projectileY > limitMin &&
+                projectileX < limitMaxX &&
+                projectileY < limitMaxY 
+            ) {
+                projectileX += moveX;
+                projectileY += moveY;
+                
+                projectile.style.left = projectileX + "px";
+                projectile.style.top = projectileY + "px";
+                
+                requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
+            }
+        }
+        
+        // Lancer la mise à jour de la position
+        updatePosition();
+        
+        return { x: projectileX, y: projectileY };
+    }
+
+
+    
+    
 });

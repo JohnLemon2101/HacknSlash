@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const playerHeight = 50;
     const playerWidth = 20;
+    var speed = 5; // Vitesse de déplacement
 
     // Récupérez la taille de la fenêtre
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
-    var speed = 5; // Vitesse de déplacement
 
     let positionX = windowWidth / 2; // Position initiale de l'image en X
     let positionY = windowHeight / 2; // Position initiale de l'image en Y
@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     persoImage.style.width = playerWidth + "px";
     persoImage.style.height = playerHeight + "px";
+
+    persoHitbox.style.width = playerWidth + "px";
+    persoHitbox.style.height = playerHeight + "px";
 
     map.style.width = windowWidth + "px";
     map.style.height = windowHeight + "px";

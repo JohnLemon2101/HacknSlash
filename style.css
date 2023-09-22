@@ -14,24 +14,16 @@ body {
 }
 section {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 6px;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
 }
 #game {
-    
-    border: 1px solid #000;
     overflow: hidden;
-    border: 0;
-    border-bottom: 1px solid #18f;
 }
 
 #perso{
     width: 20px;
     height: 50px;
     position: relative;
-    top: 230px;
-    left: 230px;
     transition: left 0.2s ease-in-out;
 }
 
@@ -72,6 +64,7 @@ section {
 }
 
 .projectile {
+    display: "none";
     width: 20px;
     height: 20px;
     background-color: #333;

@@ -1,31 +1,32 @@
 document.addEventListener("DOMContentLoaded", function() {
 
     var persoHitbox = document.getElementById("perso");
-    var obstacles = document.getElementById("obstacles");
     var persoImage = persoHitbox.querySelector("img");
     var map = document.getElementById("game");
 
-    var speed = 5; // Vitesse de déplacement
-    const squareSize = 500;
+    const playerHeight = 50;
+    const playerWidth = 20;
 
-    let positionX = squareSize / 2; // Position initiale de l'image en X
-    let positionY = squareSize / 2; // Position initiale de l'image en Y
+    // Récupérez la taille de la fenêtre
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    var speed = 5; // Vitesse de déplacement
+
+    let positionX = windowWidth / 2; // Position initiale de l'image en X
+    let positionY = windowHeight / 2; // Position initiale de l'image en Y
     let targetX = positionX; // Position cible en X
     let targetY = positionY; // Position cible en Y
 
-    let limitMax = 450;
-    let limitMin = 0;
-
-    const keysPressed = {};
-
-    persoImage.style.width = "20px";
-    persoImage.style.height = "50px";
-
+    // TODO faire en sorte que le personnage apparaisse au millieu de la salle
     persoHitbox.style.top = positionX + "px";
     persoHitbox.style.left = positionY + "px";
 
-    map.style.width = squareSize + "px";
-    map.style.height = squareSize + "px";
+    persoImage.style.width = playerWidth + "px";
+    persoImage.style.height = playerHeight + "px";
+
+    map.style.width = windowWidth + "px";
+    map.style.height = windowHeight + "px";
 
 
 
@@ -35,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
         positionX += stepX;
         positionY += stepY;
 
-        console.log(positionX)
         persoHitbox.style.left = positionX + "px";
         persoHitbox.style.top = positionY + "px";
 
@@ -44,18 +44,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }    
     
-    document.addEventListener("keydown", function(event) {
-        if(event.key === "w" && targetY>limitMin) { targetY = positionY - speed; }
-        if(event.key === "a" && targetX>limitMin) { targetX = positionX - speed; }
-        if(event.key === "s" && targetY<limitMax) { targetY = positionY + speed; }
-        if(event.key === "d" && targetX<limitMax+25) { targetX = positionX + speed; }
+    document.addEventListener("keydown", function(event) 
+    {
+        if(event.key === "w" && targetY > 0) { targetY = positionY - speed; }
+        if(event.key === "a" && targetX > 0) { targetX = positionX - speed; }
+        if(event.key === "s" && targetY < windowHeight - playerHeight) { targetY = positionY + speed; }
+        if(event.key === "d" && targetX < windowWidth - playerWidth) { targetX = positionX + speed; }
 
-        console.log(targetY)
         requestAnimationFrame(movePlayer);
-        }
-    )
-
-
+    });
 });
 
 

@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     var persoHitbox = document.getElementById("perso");
     var map = document.getElementById("game");
 
+    var playerHitbox = persoHitbox.getBoundingClientRect();
+
     const playerHeight = 50;
     const playerWidth = 20;
     var speed = 5; // Vitesse de déplacement
@@ -11,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // Récupérez la taille de la fenêtre
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    const limitMin = 0;
 
     var positionX = windowWidth / 2; // Position initiale de l'image en X
     var positionY = windowHeight / 2; // Position initiale de l'image en Y
@@ -29,35 +30,25 @@ document.addEventListener("DOMContentLoaded", function() {
     map.style.height = windowHeight + "px";
 
     function movePlayer() {
-        var playerHitbox = persoHitbox.getBoundingClientRect();
-        
-        if (
-            playerHitbox.left > limitMin &&
-            playerHitbox.top > limitMin &&
-            playerHitbox.right < windowWidth &&
-            playerHitbox.bottom < windowHeight 
-        ) {
-            const stepX = (targetX - positionX);
-            const stepY = (targetY - positionY);
-            positionX += stepX;
-            positionY += stepY;
+        const stepX = (targetX - positionX);
+        const stepY = (targetY - positionY);
+        positionX += stepX;
+        positionY += stepY;
 
-            persoHitbox.style.top = positionY + "px";
-            persoHitbox.style.left = positionX + "px";
+        persoHitbox.style.top = positionY + "px";
+        persoHitbox.style.left = positionX + "px";
 
-
-        
+        if (Math.abs(targetX - positionX) > 1 || Math.abs(targetY - positionY) > 1) {
             requestAnimationFrame(movePlayer);
         }
-        
     }    
     
     document.addEventListener("keydown", function(event) 
     {
-        if(event.key === "w") { targetY = positionY - speed; }
-        if(event.key === "a") { targetX = positionX - speed; }
-        if(event.key === "s") { targetY = positionY + speed; }
-        if(event.key === "d") { targetX = positionX + speed; }
+        if(event.key === "w" && targetY > 0) { targetY = positionY - speed; }
+        if(event.key === "a" && targetX > 0) { targetX = positionX - speed; }
+        if(event.key === "s" && targetY < windowHeight - playerHeight) { targetY = positionY + speed; }
+        if(event.key === "d" && targetX < windowWidth - playerWidth) { targetX = positionX + speed; }
 
         requestAnimationFrame(movePlayer);
     });

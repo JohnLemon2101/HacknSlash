@@ -12,15 +12,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
+    var positionX = windowWidth / 2; // Position initiale de l'image en X
+    var positionY = windowHeight / 2; // Position initiale de l'image en Y
+    
+    var targetX = positionX; // Position cible en X
+    var targetY = positionY; // Position cible en Y
 
-    let positionX = windowWidth / 2; // Position initiale de l'image en X
-    let positionY = windowHeight / 2; // Position initiale de l'image en Y
-    let targetX = positionX; // Position cible en X
-    let targetY = positionY; // Position cible en Y
-
-    // TODO faire en sorte que le personnage apparaisse au millieu de la salle
-    persoHitbox.style.top = positionX + "px";
-    persoHitbox.style.left = positionY + "px";
+    persoHitbox.style.top = positionY + "px";
+    persoHitbox.style.left = positionX + "px";
 
     persoImage.style.width = playerWidth + "px";
     persoImage.style.height = playerHeight + "px";
@@ -39,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function() {
         positionX += stepX;
         positionY += stepY;
 
-        persoHitbox.style.left = positionX + "px";
         persoHitbox.style.top = positionY + "px";
+        persoHitbox.style.left = positionX + "px";
 
         if (Math.abs(targetX - positionX) > 1 || Math.abs(targetY - positionY) > 1) {
             requestAnimationFrame(movePlayer);

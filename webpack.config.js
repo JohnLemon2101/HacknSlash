@@ -13,4 +13,9 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, "."),
   },
+  devServer: {
+    static: {
+      directory: path.resolve(__dirname, '.'), // Dossier de sortie à servir
+    },
+  },
 };

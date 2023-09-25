@@ -5,30 +5,28 @@ document.addEventListener("DOMContentLoaded", function() {
     const projectile = document.createElement("div");
     projectile.className = "projectile"; // Appliquez des styles CSS pour le projectile
     map.appendChild(projectile);
+    //projectile.style.display = "none";
 
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-
-    var projectileX = (windowWidth - parseInt(player.style.width.slice(0, -2))) / 2; // Position X initiale du projectile
-    var projectileY = (windowHeight - parseInt(player.style.height.slice(0, -2))) / 2; // Position Y initiale du projectile
 
     const limitMaxX = windowWidth - parseInt(player.style.width.slice(0, -2));
     const limitMaxY = windowHeight - parseInt(player.style.height.slice(0, -2));
     const limitMin = 0;
 
-    console.log(windowWidth)
-    console.log(windowHeight)
+    var projectileX = parseInt(player.style.left.slice(0, -2)) + parseInt(player.style.width.slice(0, -2)); // Position X initiale du projectile
+    var projectileY = parseInt(player.style.top.slice(0, -2)) - parseInt(player.style.height.slice(0, -2)) / 2; // Position Y initiale du projectile
 
-    projectile.style.top = projectileY + "px";
     projectile.style.left = projectileX + "px";
+    projectile.style.top = projectileY + "px";
 
     var speed = 5;
 
     let isShooting = false; // Variable pour suivre si le projectile est en cours de tir
 
     // Variables pour stocker les coordonnées du point de clic
-    let targetX = 0;
-    let targetY = 0;
+    var targetX = 0;
+    var targetY = 0;
 
     function moveProjectile() {
         if (isShooting) {
@@ -41,11 +39,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Calcul des composantes de déplacement en fonction de la vitesse
             const moveX = (deltaX / distance) * speed;
-            const moveY = (deltaY / distance) * speed;
+            //const moveY = (deltaY / distance) * speed;
     
             // Mise à jour de la position du projectile
             projectileX += moveX;
-            projectileY += moveY;
+            //projectileY += moveY;
     
             projectile.style.left = projectileX + "px";
             projectile.style.top = projectileY + "px";
@@ -75,25 +73,28 @@ document.addEventListener("DOMContentLoaded", function() {
 
             // Position initiale du projectile (à partir de l'image de base)
             projectileX = playerRect.left + playerRect.width;
-            projectileY = playerRect.top;
+            //projectileY = playerRect.top;
 
             projectile.style.left = projectileX + "px";
             projectile.style.top = projectileY + "px";
                 
-            console.log(x)
+            console.log(playerRect.top)
+            console.log(projectile.style.top)
 
             targetX = x;
-            targetY = y;     
+            //targetY = y;     
 
-            console.log(targetX)
-            console.log(targetY)
-            let finalPosition = calculateFinalPosition(projectileX, projectileY, targetX, targetY)
-            targetX = finalPosition.x;
-            targetY = finalPosition.y; 
+            //console.log("co")
+            //console.log(targetX)
+           // console.log(targetY)
+
+            //let finalPosition = calculateFinalPosition(projectileX, projectileY, targetX, targetY)
+            //targetX = finalPosition.x;
+            //targetY = finalPosition.y; 
 
             console.log("targetX")
             console.log(targetX)
-            console.log(targetY)
+            //console.log(targetY)
 
             isShooting = true;
             moveProjectile();
@@ -107,8 +108,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
     map.addEventListener("mousedown", function(event) {
-        
-        
         startShooting(event.clientX, event.clientY);
     });
 

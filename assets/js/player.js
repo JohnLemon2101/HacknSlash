@@ -8,8 +8,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const playerHeight = 50;
     const playerWidth = 20;
-    var speed = 5; // Vitesse de déplacement
 
+    var speed = 5; // Vitesse de déplacement
+    var life = 2;
+    
     // Récupérez la taille de la fenêtre
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;

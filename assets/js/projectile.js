@@ -10,6 +10,7 @@ var projectileX = 0;
 var projectileY = 0;
 
 var speed = 20;
+var damage = 1;
 
 let isShooting = false; // Variable pour suivre si le projectile est en cours de tir
 

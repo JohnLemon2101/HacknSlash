@@ -1,5 +1,5 @@
 var life = 1;
-const monsterSpeed = 5;
+const monsterSpeed = 2;
 const monsterHeight = 50;
 const monsterWidth = 50;
 

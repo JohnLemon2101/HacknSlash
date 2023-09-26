@@ -1,18 +1,20 @@
 import { startShooting } from "./projectile";
-
-var speed = 5; // Vitesse de déplacement
-var life = 2;
-var damage = 1;
+const windowWidth = window.innerWidth;
+const windowHeight = window.innerHeight;
 
 const playerWidth = 20;
 const playerHeight = 50;
 
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
+export var speedY = 5; // Vitesse de déplacement
+export var speedX = (speedY * windowWidth) / playerWidth;
+var life = 1;
+export var damage = 1;
+
 var map = document.getElementById("game");
 
 export function createPlayer() {
     const player = document.createElement("div");
+    player.dataset.life = life;
     const imagePlayer = document.createElement("img");
     player.id = "player";
     imagePlayer.src = "./assets/images/img.png";
@@ -30,36 +32,13 @@ export function createPlayer() {
 
     player.style.left = initialX + "px";
     player.style.top = initialY + "px";
-}
-
-
-    function handlePlayerMovement(event, player) {
-        const playerRect = player.getBoundingClientRect();
-
-        var targetX = playerRect.left; // Position cible en X
-        var targetY = playerRect.top; // Position cible en Y
-
-        if(event.key === "w" && targetY > 0) { targetY -= speed; }
-        if(event.key === "s" && targetY < windowHeight - playerHeight) { targetY += speed; }
-        if(event.key === "a" && targetX > 0) { targetX -= speed; }
-        if(event.key === "d" && targetX < windowWidth - playerWidth) { targetX += speed; }
-
-
-        player.style.top = targetY + "px";
-        player.style.left = targetX + "px";
-    }    
+    return player;
+} 
     
     
-    document.addEventListener("keydown", function(event) 
-    {
-        handlePlayerMovement(event, player);
-    });
-
-    // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
-    map.addEventListener("mousedown", function(event) {
-        startShooting(event.clientX, event.clientY, player, damage);
-    });
-
+map.addEventListener("mousedown", function(event) {
+    startShooting(event.clientX, event.clientY, player, damage);
+});
 
 
 

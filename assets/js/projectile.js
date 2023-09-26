@@ -1,4 +1,3 @@
-const player = "";
 const map = document.getElementById("game");
 
 const windowWidth = window.innerWidth;
@@ -20,12 +19,12 @@ var targetY = 0;
 
 export function startShooting(x, y, player, damagePlayer) {
     damage = damagePlayer;
-    player = player;
     
     let playerHitbox = player.getBoundingClientRect();
 
     const projectile = document.createElement("div");
     projectile.className = "projectile"; // Appliquez des styles CSS pour le projectile
+    projectile.dataset.damage = damage;
     map.appendChild(projectile);
 
     projectileX = playerHitbox.left; // Position X initiale du projectile
@@ -63,19 +62,14 @@ function moveProjectile(projectileX, projectileY, targetX, targetY, projectile) 
                 projHitBox.right < windowWidth &&
                 projHitBox.bottom < windowHeight 
             ) {
-                // Vérifiez la collision avec les monstres
-                if (checkCollisionWithMonsters(projHitBox)) {
-                    // Collision détectée, supprimez le projectile
-                    stopShooting(projectile);
-                } else {
-                    projectileX += moveX;
-                    projectileY += moveY;
+                projectileX += moveX;
+                projectileY += moveY;
 
-                    projectile.style.left = projectileX + "px";
-                    projectile.style.top = projectileY + "px";
+                projectile.style.left = projectileX + "px";
+                projectile.style.top = projectileY + "px";
 
-                    requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
-                }
+                requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
+            
             }else{
                 stopShooting(projectile);
             }
@@ -87,33 +81,41 @@ function moveProjectile(projectileX, projectileY, targetX, targetY, projectile) 
 
 function stopShooting(projectile) {
     isShooting = false;
-    map.removeChild(projectile);
+    if (map.contains(projectile)) {
+        map.removeChild(projectile);
+    }
 }
 
 // Détection de collision entre projectiles et monstres
-export function checkCollisionWithMonsters (projectileRect) {
+export function checkCollisionWithMonsters () {
+    const projectiles = document.querySelectorAll(".projectile");
     const monsters = document.querySelectorAll(".monster");
 
-    monsters.forEach((monster) => {
-        const monsterRect = monster.getBoundingClientRect();
+    projectiles.forEach((projectile) => {
+        const projectileRect = projectile.getBoundingClientRect();
 
-        // Vérifiez si les rectangles de collision se chevauchent
-        if (
-            projectileRect.right > monsterRect.left &&
-            projectileRect.left < monsterRect.right &&
-            projectileRect.bottom > monsterRect.top &&
-            projectileRect.top < monsterRect.bottom
-        ) {
-            // Collision détectée, supprimez le projectile et le monstre
-            console.log("touché")
-            monster.remove();
-            return true;
+        monsters.forEach((monster) => {
+            const monsterRect = monster.getBoundingClientRect();
 
-            // Ajoutez ici la logique de jeu liée à la collision (par exemple, augmentez le score du joueur)
-        }
+            // Vérifiez si les rectangles de collision se chevauchent
+            if (
+                projectileRect.right > monsterRect.left &&
+                projectileRect.left < monsterRect.right &&
+                projectileRect.bottom > monsterRect.top &&
+                projectileRect.top < monsterRect.bottom
+            ) {
+                // Collision détectée, supprimez le projectile et le monstre
+                monster.dataset.life = monster.dataset.life - projectile.dataset.damage
+                projectile.remove();
+                isShooting = false;
+                if(monster.dataset.life == 0){
+                    monster.remove();
+                }
+
+                // Ajoutez ici la logique de jeu liée à la collision (par exemple, augmentez le score du joueur)
+            }
+        });
     });
-    
-    return false; // Pas de collision avec les monstres
 }
 
 

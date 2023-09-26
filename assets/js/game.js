@@ -1,27 +1,37 @@
 // game.js
 
-import { createPlayer, damage, speedY, speedX } from './player.js';
+import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
+import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
-import { checkCollisionWithMonsters } from './projectile.js';
+import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 
 let numMonsters = 3;
 let player;
-var map;
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
+var map = document.getElementById("map");
+var game = document.getElementById("game");
+//var hp = document.getElementById("hp");
+
+map.style.width = windowWidth + "px";
+map.style.height = windowHeight + "px";
 
 const keysPressed = {};
 
 export function initializeGame() {
-    map = document.getElementById("game");
-    
-    // Récupérez la taille de la fenêtre
-
-    map.style.width = windowWidth + "px";
-    map.style.height = windowHeight + "px";
-
     // Initialisation du jeu
+
+    //TODO mettre les pv dans le div du player
     player = createPlayer();
+    /*hp.style.width = 20 * player.dataset.life + "px";
+    d.log(player.dataset.life)
+    for(let i = 0; i < player.dataset.life; i++){
+        
+        const imageHeart = document.createElement("img");
+        imageHeart.src = "./assets/images/full_heart.png";
+        imageHeart.className = "heart";
+        imageHeart.id = "heart" + i;
+        hp.appendChild(imageHeart);
+    }*/
+
     for(let i = 0; i < numMonsters; i++){
         createMonster(Math.floor(Math.random() * 4));
     }
@@ -35,6 +45,7 @@ function handlePlayerMovement() {
 
     let playerHeight = playerRect.height;
     let playerWidth = playerRect.width;
+
     var targetX = playerRect.left; // Position cible en X
     var targetY = playerRect.top; // Position cible en Y
 
@@ -50,9 +61,13 @@ function handlePlayerMovement() {
 
 
 function gameLoop() {
+    
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
         // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
         
+        game.addEventListener("mousedown", function(event) {
+            startShooting(event.clientX, event.clientY, player);
+        });
 
         document.addEventListener("keydown", function(event) {
             // Stocker l'état de la touche pressée dans l'objet keysPressed
@@ -66,6 +81,8 @@ function gameLoop() {
 
         handlePlayerMovement();
         checkCollisionWithMonsters();
+
+        //TODO faire une check du nombre de monstre en vie si plus aucun refaire une vague avec 1 de plus
     // Appeler la boucle de jeu à la prochaine frame
     requestAnimationFrame(gameLoop);
 }

@@ -1,4 +1,4 @@
-const map = document.getElementById("game");
+const map = document.getElementById("map");
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -17,9 +17,8 @@ let isShooting = false; // Variable pour suivre si le projectile est en cours de
 var targetX = 0;
 var targetY = 0;
 
-export function startShooting(x, y, player, damagePlayer) {
-    damage = damagePlayer;
-    
+export function startShooting(x, y, player) {
+    damage = player.dataset.damage;
     let playerHitbox = player.getBoundingClientRect();
 
     const projectile = document.createElement("div");

@@ -1,24 +1,21 @@
 import { startShooting } from "./projectile";
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
+import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
-const playerWidth = 20;
-const playerHeight = 50;
+var map = document.getElementById("map");
 
-export var speedY = 5; // Vitesse de déplacement
-export var speedX = (speedY * windowWidth) / playerWidth;
-var life = 1;
-export var damage = 1;
-
-var map = document.getElementById("game");
+export var life = 1;
+var damage = 1;
 
 export function createPlayer() {
     const player = document.createElement("div");
     player.dataset.life = life;
-    const imagePlayer = document.createElement("img");
+    player.dataset.damage = damage;
     player.id = "player";
+
+    const imagePlayer = document.createElement("img");
     imagePlayer.src = "./assets/images/img.png";
-    document.getElementById("game").appendChild(player);
+
+    map.appendChild(player);
     player.appendChild(imagePlayer);
 
     // Définir la taille et la position initiale du joueur
@@ -35,13 +32,12 @@ export function createPlayer() {
     return player;
 } 
     
-    
+    /*
 map.addEventListener("mousedown", function(event) {
-    startShooting(event.clientX, event.clientY, player, damage);
+    console.log("test")
+    startShooting(event.clientX, event.clientY, player);
 });
-
-
-
+*/
 /*
 var verification = setInterval(function(){
     var persoHitboxTop = parseInt(window.getComputedStyle(persoHitbox).getPropertyValue("top"))

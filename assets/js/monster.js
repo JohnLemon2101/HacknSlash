@@ -1,18 +1,12 @@
+import { windowHeight, windowWidth, monsterHeight, monsterWidth } from './data.js';
 
 var damage = 1;
 var monsterLife;
-const monsterSpeed = 2;
-const monsterHeight = 50;
-const monsterWidth = 50;
+var monsterSpeed = 2;
 
-const map = document.getElementById("game");
-
-// Positionnez le monstre aléatoirement sur la carte de jeu
-const windowWidth = window.innerWidth;
-const windowHeight = window.innerHeight;
+const map = document.getElementById("map");
 
 export function createMonster(life) {
-    console.log(life)
     if(life == 0){
         monsterLife = 1;
     }else{
@@ -25,6 +19,8 @@ export function createMonster(life) {
     monster.style.width = monsterWidth + "px";
     monster.dataset.life = monsterLife;
     monster.dataset.damage = damage;
+    map.appendChild(monster);
+
 
     // Générez une position aléatoire sur le côté de la carte
     const side = Math.floor(Math.random() * 4); // 0: haut, 1: droite, 2: bas, 3: gauche
@@ -96,39 +92,4 @@ export function createMonster(life) {
 
     // Démarrez le mouvement du monstre
     requestAnimationFrame(moveMonster);
-
-
-
-
-
-
 }
-/*
-document.addEventListener("DOMContentLoaded", function() {
-    const monster = document.querySelector(".monster");
-
-    // Fonction pour déplacer le monstre aléatoirement
-    function moveMonster() {
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-
-        const maxX = windowWidth - monster.clientWidth;
-        const maxY = windowHeight - monster.clientHeight;
-
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
-
-        monster.style.left = randomX + "px";
-        monster.style.top = randomY + "px";
-    }
-
-    // Déplacer le monstre lorsque la page est chargée
-    moveMonster();
-
-    // Déplacer le monstre à chaque clic de souris
-    monster.addEventListener("click", moveMonster);
-});
-
-*/
-
-

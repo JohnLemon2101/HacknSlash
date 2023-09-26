@@ -1,4 +1,4 @@
-const player = document.getElementById("perso");
+const player = "";
 const map = document.getElementById("game");
 
 const windowWidth = window.innerWidth;
@@ -10,7 +10,7 @@ var projectileX = 0;
 var projectileY = 0;
 
 var speed = 20;
-var damage = 1;
+var damage = 0;
 
 let isShooting = false; // Variable pour suivre si le projectile est en cours de tir
 
@@ -18,7 +18,10 @@ let isShooting = false; // Variable pour suivre si le projectile est en cours de
 var targetX = 0;
 var targetY = 0;
 
-export function startShooting(x, y) {
+export function startShooting(x, y, player, damagePlayer) {
+    damage = damagePlayer;
+    player = player;
+    
     let playerHitbox = player.getBoundingClientRect();
 
     const projectile = document.createElement("div");
@@ -60,13 +63,19 @@ function moveProjectile(projectileX, projectileY, targetX, targetY, projectile) 
                 projHitBox.right < windowWidth &&
                 projHitBox.bottom < windowHeight 
             ) {
-                projectileX += moveX;
-                projectileY += moveY;
-                
-                projectile.style.left = projectileX + "px";
-                projectile.style.top = projectileY + "px";
-                
-                requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
+                // Vérifiez la collision avec les monstres
+                if (checkCollisionWithMonsters(projHitBox)) {
+                    // Collision détectée, supprimez le projectile
+                    stopShooting(projectile);
+                } else {
+                    projectileX += moveX;
+                    projectileY += moveY;
+
+                    projectile.style.left = projectileX + "px";
+                    projectile.style.top = projectileY + "px";
+
+                    requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
+                }
             }else{
                 stopShooting(projectile);
             }
@@ -80,5 +89,33 @@ function stopShooting(projectile) {
     isShooting = false;
     map.removeChild(projectile);
 }
+
+// Détection de collision entre projectiles et monstres
+export function checkCollisionWithMonsters (projectileRect) {
+    const monsters = document.querySelectorAll(".monster");
+
+    monsters.forEach((monster) => {
+        const monsterRect = monster.getBoundingClientRect();
+
+        // Vérifiez si les rectangles de collision se chevauchent
+        if (
+            projectileRect.right > monsterRect.left &&
+            projectileRect.left < monsterRect.right &&
+            projectileRect.bottom > monsterRect.top &&
+            projectileRect.top < monsterRect.bottom
+        ) {
+            // Collision détectée, supprimez le projectile et le monstre
+            console.log("touché")
+            monster.remove();
+            return true;
+
+            // Ajoutez ici la logique de jeu liée à la collision (par exemple, augmentez le score du joueur)
+        }
+    });
+    
+    return false; // Pas de collision avec les monstres
+}
+
+
 
 

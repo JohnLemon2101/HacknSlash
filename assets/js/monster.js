@@ -1,4 +1,6 @@
-var life = 1;
+
+var damage = 1;
+var monsterLife;
 const monsterSpeed = 2;
 const monsterHeight = 50;
 const monsterWidth = 50;
@@ -9,17 +11,23 @@ const map = document.getElementById("game");
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
 
-export function createMonster() {
+export function createMonster(life) {
+    console.log(life)
+    if(life == 0){
+        monsterLife = 1;
+    }else{
+        monsterLife = life;
+    }
     // Créez un élément div pour représenter le monstre
     const monster = document.createElement("div");
     monster.className = "monster"; // Appliquez des styles CSS pour le monstre
     monster.style.height = monsterHeight + "px";
     monster.style.width = monsterWidth + "px";
-
+    monster.dataset.life = monsterLife;
+    monster.dataset.damage = damage;
 
     // Générez une position aléatoire sur le côté de la carte
     const side = Math.floor(Math.random() * 4); // 0: haut, 1: droite, 2: bas, 3: gauche
-    console.log(side)
     let monsterX, monsterY;
     
     switch (side) {
@@ -72,10 +80,16 @@ export function createMonster() {
 
         // Vérifiez si le monstre a atteint le joueur
         if (
-            Math.abs(playerRect.left - monsterRect.left) < 10 &&
-            Math.abs(playerRect.top - monsterRect.top) < 10
+            playerRect.left < monsterRect.right &&
+            playerRect.top < monsterRect.bottom &&
+            playerRect.right > monsterRect.left &&
+            playerRect.bottom > monsterRect.top 
         ) {
             // Le monstre a atteint le joueur, vous pouvez ajouter votre logique de jeu ici (par exemple, réduire la santé du joueur)
+            player.dataset.life = player.dataset.life - monster.dataset.damage
+            if(player.dataset.life == 0){
+                alert("Vous avez perdu :)")
+            }
             monster.remove(); // Supprimez le monstre
         }
     }

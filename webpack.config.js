@@ -2,15 +2,9 @@ const path = require('path');
 
 module.exports = { 
   mode: 'development', // Vous pouvez également utiliser 'production' ou 'none' en fonction de vos besoins.
-  entry: {
-    bundle: [
-        path.resolve(__dirname, 'assets/js/player.js'),
-        path.resolve(__dirname, 'assets/js/projectile.js'),
-    ]
-    
-  },
+  entry: path.resolve(__dirname, 'assets/js/main.js'),
   output: {
-    filename: 'main.js',
+    filename: 'bundle.js',
     path: path.resolve(__dirname, "."),
   },
   devServer: {

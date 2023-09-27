@@ -65,9 +65,7 @@ function gameLoop() {
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
         // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
         
-        game.addEventListener("mousedown", function(event) {
-            startShooting(event.clientX, event.clientY, player);
-        });
+
 
         document.addEventListener("keydown", function(event) {
             // Stocker l'état de la touche pressée dans l'objet keysPressed

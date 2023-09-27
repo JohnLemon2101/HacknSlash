@@ -2,6 +2,7 @@ import { startShooting } from "./projectile";
 import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
 var map = document.getElementById("map");
+var game = document.getElementById("game");
 
 export var life = 1;
 var damage = 1;
@@ -32,12 +33,9 @@ export function createPlayer() {
     return player;
 } 
     
-    /*
-map.addEventListener("mousedown", function(event) {
-    console.log("test")
+game.addEventListener("mousedown", function(event) {
     startShooting(event.clientX, event.clientY, player);
 });
-*/
 /*
 var verification = setInterval(function(){
     var persoHitboxTop = parseInt(window.getComputedStyle(persoHitbox).getPropertyValue("top"))

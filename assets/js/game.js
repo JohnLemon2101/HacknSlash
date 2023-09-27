@@ -5,7 +5,7 @@ import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 
-let numMonsters = 3;
+var numMonsters = 3;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
@@ -19,22 +19,9 @@ const keysPressed = {};
 export function initializeGame() {
     // Initialisation du jeu
 
-    //TODO mettre les pv dans le div du player
     player = createPlayer();
-    /*hp.style.width = 20 * player.dataset.life + "px";
-    d.log(player.dataset.life)
-    for(let i = 0; i < player.dataset.life; i++){
-        
-        const imageHeart = document.createElement("img");
-        imageHeart.src = "./assets/images/full_heart.png";
-        imageHeart.className = "heart";
-        imageHeart.id = "heart" + i;
-        hp.appendChild(imageHeart);
-    }*/
 
-    for(let i = 0; i < numMonsters; i++){
-        createMonster(Math.floor(Math.random() * 4));
-    }
+    spawnMonsters(numMonsters);
 
     // Boucle de jeu principale
     requestAnimationFrame(gameLoop);
@@ -58,14 +45,40 @@ function handlePlayerMovement() {
     player.style.left = targetX + "px";
 }    
 
+function checkHP() {
+    let hearts = document.querySelectorAll(".heart")
+    hearts.forEach(heart => {
+        if(player.dataset.life == heart.id.substring(5)){
+            heart.src = "./assets/images/empty_heart.png";
+        }
+    });
+    if(player.dataset.life == 0){
+        alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
+        location.reload();
+    }
+}
 
+function checkMonsterAlive() {
+    let monsters = document.querySelectorAll(".monster")
+    if (monsters.length === 0) {
+        numMonsters++
+        console.log(numMonsters)
+        spawnMonsters(numMonsters)
+    }
+}
+
+function spawnMonsters(nb) {
+    for(let i = 0; i < nb; i++){
+        createMonster(Math.floor(Math.random() * 4));
+    }
+}
 
 function gameLoop() {
     
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
         // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
-        
-
+        checkMonsterAlive()
+        checkHP();
 
         document.addEventListener("keydown", function(event) {
             // Stocker l'état de la touche pressée dans l'objet keysPressed

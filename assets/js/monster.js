@@ -83,9 +83,7 @@ export function createMonster(life) {
         ) {
             // Le monstre a atteint le joueur, vous pouvez ajouter votre logique de jeu ici (par exemple, réduire la santé du joueur)
             player.dataset.life = player.dataset.life - monster.dataset.damage
-            if(player.dataset.life == 0){
-                alert("Vous avez perdu :)")
-            }
+
             monster.remove(); // Supprimez le monstre
         }
     }

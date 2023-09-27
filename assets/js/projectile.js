@@ -104,10 +104,11 @@ export function checkCollisionWithMonsters () {
                 projectileRect.top < monsterRect.bottom
             ) {
                 // Collision détectée, supprimez le projectile et le monstre
-                monster.dataset.life = monster.dataset.life - projectile.dataset.damage
+                monster.dataset.life = monster.dataset.life - projectile.dataset.damage;
+                monster.textContent = monster.dataset.life;
                 projectile.remove();
                 isShooting = false;
-                if(monster.dataset.life == 0){
+                if(monster.dataset.life <= 0){
                     monster.remove();
                 }
 

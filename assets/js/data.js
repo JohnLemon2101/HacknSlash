@@ -1,3 +1,4 @@
+//data.js
 // taille de la map
 export var windowWidth = window.innerWidth;
 export var windowHeight = window.innerHeight;

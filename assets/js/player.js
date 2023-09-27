@@ -4,8 +4,8 @@ import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 var map = document.getElementById("map");
 var game = document.getElementById("game");
 
-export var life = 3;
-var damage = 1;
+export var life = 4;
+var damage = 2;
 
 export function createPlayer() {
     const player = document.createElement("div");
@@ -30,11 +30,11 @@ export function createPlayer() {
     }
     
     const imagePlayer = document.createElement("img");
-    imagePlayer.src = "./assets/images/img.png";
+    imagePlayer.id = "imagePlayer"
+    imagePlayer.src = "./assets/images/player.png";
 
     map.appendChild(player);
 
-    
     map.appendChild(hp);
     
 
@@ -55,16 +55,3 @@ export function createPlayer() {
     player.style.top = initialY + "px";
     return player;
 } 
-    
-game.addEventListener("mousedown", function(event) {
-    startShooting(event.clientX, event.clientY, player);
-});
-/*
-var verification = setInterval(function(){
-    var persoHitboxTop = parseInt(window.getComputedStyle(persoHitbox).getPropertyValue("top"))
-    var obstaclesLeft = parseInt(window.getComputedStyle(obstacles).getPropertyValue("left"))
-    if(obstaclesLeft<20 && obstaclesLeft>0 && persoHitboxTop>=130){
-        obstacles.style.animation = "none";
-        //alert("Looser")
-    }
-},1)*/

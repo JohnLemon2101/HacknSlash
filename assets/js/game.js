@@ -5,7 +5,7 @@ import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 
-var numMonsters = 3;
+var numMonsters = 20;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
@@ -23,9 +23,28 @@ export function initializeGame() {
 
     spawnMonsters(numMonsters);
 
+    document.addEventListener("keydown", handleKeyDown);
+    
+    document.addEventListener("keyup", handleKeyUp);
+
+    game.addEventListener("mousedown", handleMouseClick);
+
     // Boucle de jeu principale
     requestAnimationFrame(gameLoop);
 }
+
+function handleKeyDown(event) {
+    keysPressed[event.key] = true;
+}
+
+function handleKeyUp(event) {
+    delete keysPressed[event.key];
+}
+
+function handleMouseClick(event) {
+    startShooting(event.clientX, event.clientY, player);
+}
+
 
 function handlePlayerMovement() {
     const playerRect = player.getBoundingClientRect();
@@ -53,8 +72,7 @@ function checkHP() {
         }
     });
     if(player.dataset.life == 0){
-        alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
-        location.reload();
+        endGame()
     }
 }
 
@@ -62,7 +80,6 @@ function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
     if (monsters.length === 0) {
         numMonsters++
-        console.log(numMonsters)
         spawnMonsters(numMonsters)
     }
 }
@@ -76,24 +93,29 @@ function spawnMonsters(nb) {
 function gameLoop() {
     
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
-        // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
-        checkMonsterAlive()
-        checkHP();
+    // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
+    checkHP();
+    checkMonsterAlive()
+    
 
-        document.addEventListener("keydown", function(event) {
-            // Stocker l'état de la touche pressée dans l'objet keysPressed
-            keysPressed[event.key] = true;
-        });
-        
-        document.addEventListener("keyup", function(event) {
-            // Supprimer la touche de l'objet keysPressed lorsque la touche est relâchée
-            delete keysPressed[event.key];
-        });
+ 
+    handlePlayerMovement();
+    checkCollisionWithMonsters();
 
-        handlePlayerMovement();
-        checkCollisionWithMonsters();
-
-        //TODO faire une check du nombre de monstre en vie si plus aucun refaire une vague avec 1 de plus
     // Appeler la boucle de jeu à la prochaine frame
     requestAnimationFrame(gameLoop);
+}
+
+function endGame() {
+    // Supprimez les gestionnaires d'événements lorsque le jeu est terminé
+    //map.removeEventListener("mousedown", handleMouseClick);
+    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("keyup", handleKeyUp);
+
+    setTimeout(function () {
+        alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
+        location.reload();
+    }, 500);
+    
+    // Autres actions de fin de jeu
 }

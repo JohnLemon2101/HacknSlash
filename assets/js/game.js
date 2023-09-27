@@ -4,6 +4,7 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
+import { display } from './dialog.js';
 
 var numMonsters = 20;
 let player;
@@ -14,6 +15,7 @@ var game = document.getElementById("game");
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
 
+var isEnded = 0;
 const keysPressed = {};
 
 export function initializeGame() {
@@ -65,13 +67,18 @@ function handlePlayerMovement() {
 }    
 
 function checkHP() {
-    let hearts = document.querySelectorAll(".heart")
-    hearts.forEach(heart => {
-        if(player.dataset.life == heart.id.substring(5)){
+    for(let i = 0; i < player.dataset.initialLife; i++){
+        let heart = document.getElementById("heart" + i);
+        if(i + 1 <= player.dataset.life){
+            heart.src = "./assets/images/full_heart.png";
+        } else {
             heart.src = "./assets/images/empty_heart.png";
         }
-    });
-    if(player.dataset.life == 0){
+        
+    }
+
+    if(player.dataset.life <= 0 && isEnded == 0){
+        isEnded++;
         endGame()
     }
 }
@@ -80,7 +87,7 @@ function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
     if (monsters.length === 0) {
         numMonsters++
-        spawnMonsters(numMonsters)
+        //spawnMonsters(numMonsters)
     }
 }
 
@@ -88,6 +95,28 @@ function spawnMonsters(nb) {
     for(let i = 0; i < nb; i++){
         createMonster(Math.floor(Math.random() * 4));
     }
+}
+
+function endGame() {
+    // Supprimez les gestionnaires d'événements lorsque le jeu est terminé
+    game.removeEventListener("mousedown", handleMouseClick);
+    document.removeEventListener("keydown", handleKeyDown);
+    document.removeEventListener("keyup", handleKeyUp);
+
+    const monsters = document.querySelectorAll(".monster");
+
+    monsters.forEach((monster) => {
+        monster.remove();
+    });
+
+    display("gameOver");
+    
+    /*setTimeout(function () {
+        //alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
+        location.reload();
+    }, 100);*/
+    
+    // Autres actions de fin de jeu
 }
 
 function gameLoop() {
@@ -106,16 +135,3 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-function endGame() {
-    // Supprimez les gestionnaires d'événements lorsque le jeu est terminé
-    //map.removeEventListener("mousedown", handleMouseClick);
-    document.removeEventListener("keydown", handleKeyDown);
-    document.removeEventListener("keyup", handleKeyUp);
-
-    setTimeout(function () {
-        alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
-        location.reload();
-    }, 500);
-    
-    // Autres actions de fin de jeu
-}

@@ -4,17 +4,19 @@ const game = document.getElementById("game");
 
 export function display(dialogId) {
     let dialog = document.getElementById(dialogId);
-    createDialogContent(dialogId, "Game Over", "votre score est de ... vague(s)", true, "playerName", "gameOver")
+    createDialogContent(dialogId, "Game Over", "votre score est de ", " vague(s)", true, "playerName", "gameOver", 3)
     dialog.style.display = "block";
+    testButton()
 }
 
-export function createDialogContent (dialogId, title, text, isInput = false, inputName, buttonsType){
+export function createDialogContent (dialogId, title, text, text2, isInput = false, inputName, buttonsType, optional = ""){
     customDialog = document.getElementById(dialogId);
     let div1 = document.createElement("div")
-    let textElement = document.createElement("p");
     let titleElement = document.createElement("h1");
-    textElement.textContent = text;
+    let textElement = document.createElement("p");
+
     titleElement.textContent = title;
+    textElement.textContent = text + optional + text2;
 
     customDialog.appendChild(div1)
 
@@ -70,6 +72,25 @@ export function createDialogContent (dialogId, title, text, isInput = false, inp
 }
 
 
+function testButton(){
+    let logButton = document.getElementById("logButton")
+    let restartButton = document.getElementById("restartButton")
+
+    if(logButton !== null){
+        logButton.addEventListener("click", () => {
+            // Action personnalisée à effectuer après avoir cliqué sur le bouton
+            console.log("logButton !");
+
+        });
+    }
+
+    if(restartButton !== null){
+        restartButton.addEventListener("click", () => {
+            // Action personnalisée à effectuer après avoir cliqué sur le bouton
+            location.reload();
+        });
+    }
+}
 /*
 <div id="customDialog" class="dialog">
             <p>Ceci est une boîte de dialogue personnalisée.</p>

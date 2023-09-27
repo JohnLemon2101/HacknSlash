@@ -113,7 +113,7 @@ function endGame() {
     
     /*setTimeout(function () {
         //alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
-        location.reload();
+        
     }, 100);*/
     
     // Autres actions de fin de jeu

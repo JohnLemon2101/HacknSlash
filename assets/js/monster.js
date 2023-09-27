@@ -19,6 +19,8 @@ export function createMonster(life) {
     monster.style.width = monsterWidth + "px";
     monster.dataset.life = monsterLife;
     monster.dataset.damage = damage;
+    monster.textContent = monsterLife;
+    monster.style.color = "white";
     map.appendChild(monster);
 
 
@@ -83,7 +85,14 @@ export function createMonster(life) {
         ) {
             // Le monstre a atteint le joueur, vous pouvez ajouter votre logique de jeu ici (par exemple, réduire la santé du joueur)
             player.dataset.life = player.dataset.life - monster.dataset.damage
-
+            let  imagePlayer = document.getElementById("imagePlayer");
+            
+            imagePlayer.src = "./assets/images/player_hurt.png";
+            
+            setTimeout(function () {
+                imagePlayer.src = "./assets/images/player.png";
+            }, 500);
+            
             monster.remove(); // Supprimez le monstre
         }
     }

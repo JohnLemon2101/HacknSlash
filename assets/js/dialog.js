@@ -53,6 +53,10 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
             div3.appendChild(button2)
 
             break;
+        case "upgrade":
+            //TODO ajouter des améliorations (vie/degat/?) déjà 2 à améliorer 
+        
+            break;
     }
 
     /*if (buttons.length >= 3){
@@ -78,7 +82,8 @@ function testButton(){
 
     if(logButton !== null){
         logButton.addEventListener("click", () => {
-            // Action personnalisée à effectuer après avoir cliqué sur le bouton
+            // TODO faire un enregistrement du score avec un pseudo de 3 lettres dans un txt ou autre (JSON ? peut etre plus simple)
+            //TODO afficher les 5 premiers des scores.
             console.log("logButton !");
 
         });
@@ -86,7 +91,6 @@ function testButton(){
 
     if(restartButton !== null){
         restartButton.addEventListener("click", () => {
-            // Action personnalisée à effectuer après avoir cliqué sur le bouton
             location.reload();
         });
     }

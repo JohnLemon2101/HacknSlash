@@ -4,18 +4,21 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver } from './dialog.js';
+import { displayGameOver, displayUpgrade } from './dialog.js';
 
-var numMonsters = 20;
+const numMonstersAtStart = 3;
+var numVague = 5;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
+
 //var hp = document.getElementById("hp");
 
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
 
 var isEnded = 0;
+let isUpdated = false;
 const keysPressed = {};
 
 export function initializeGame() {
@@ -23,7 +26,7 @@ export function initializeGame() {
 
     player = createPlayer();
 
-    spawnMonsters(numMonsters);
+    spawnMonsters(numMonstersAtStart);
 
     document.addEventListener("keydown", handleKeyDown);
     
@@ -86,8 +89,21 @@ function checkHP() {
 function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
     if (monsters.length === 0) {
-        numMonsters++
-        //spawnMonsters(numMonsters)
+        if((numVague) % 5 === 0 && !isUpdated){
+            isUpdated = true;
+            displayUpgrade("upgrade");
+            console.log(document.getElementById("upgrade").style.display)
+            /*if(document.getElementById("upgrade").style.display == "none"){
+                isUpdated = false;
+                numVague++;
+                spawnMonsters(numVague + numMonstersAtStart);                
+            }*/
+        } else {
+            if(!isUpdated){
+                numVague++;
+                spawnMonsters(numVague + numMonstersAtStart);   
+            }         
+        }
     }
 }
 
@@ -109,14 +125,7 @@ function endGame() {
         monster.remove();
     });
 
-    displayGameOver("gameOver", (numMonsters - 3));
-    
-    /*setTimeout(function () {
-        //alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))
-        
-    }, 100);*/
-    
-    // Autres actions de fin de jeu
+    displayGameOver("gameOver", (numVague));
 }
 
 function gameLoop() {

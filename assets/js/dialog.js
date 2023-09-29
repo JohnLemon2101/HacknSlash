@@ -12,7 +12,14 @@ export function displayGameOver(dialogId, score) {
     testButton()
 }
 
-export function createDialogContent (dialogId, title, text, text2, isInput = false, inputName, buttonsType, optional = ""){
+export function displayUpgrade(dialogId) {
+    let dialog = document.getElementById(dialogId);
+    createDialogContent(dialogId, "Upgrade", "Veuillez choisir votre améloration", "", false, "", "upgrade")
+    dialog.style.display = "block";
+    testButton()
+}
+
+function createDialogContent (dialogId, title, text, text2 = "", isInput = false, inputName, buttonsType, optional = ""){
     score = optional;
     customDialog = document.getElementById(dialogId);
     let div1 = document.createElement("div")
@@ -41,38 +48,41 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         
         div2.appendChild(input)
     }
-
-    const params = new URLSearchParams({ filePath: filepath });
-    const urlAvecParametres = `${apiURL}?${params}`;
     
-    let div3 = document.createElement("div")
-    customDialog.appendChild(div3)
+    if(dialogId == "gameOver"){
 
-    const ul = document.createElement("ul");
+        const params = new URLSearchParams({ filePath: filepath });
+        const urlAvecParametres = `${apiURL}?${params}`;
 
-    axios.get(urlAvecParametres)
-    .then(response => {
-        console.log(response)
-        // Traitement de la réponse icidw
-        let score = 1;
-        response.data.data.forEach(item => {
-            // item contient chaque objet de response.data
-            if(item){
-                const li = document.createElement("li");
-                li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
-                ul.appendChild(li);
-                console.log(item); // Affiche la valeur de la clé "key" de l'objet
-                // Faites ce que vous devez faire avec chaque élément ici
-                score++;
-            }
-            
+        let div3 = document.createElement("div")
+        customDialog.appendChild(div3)
+    
+        const ul = document.createElement("ul");
+    
+        axios.get(urlAvecParametres)
+        .then(response => {
+            console.log(response)
+            // Traitement de la réponse icidw
+            let score = 1;
+            response.data.data.forEach(item => {
+                // item contient chaque objet de response.data
+                if(item){
+                    const li = document.createElement("li");
+                    li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
+                    ul.appendChild(li);
+                    console.log(item); // Affiche la valeur de la clé "key" de l'objet
+                    // Faites ce que vous devez faire avec chaque élément ici
+                    score++;
+                }
+                
+            });
+        })
+        .catch(error => {
+            console.error('Erreur :', error);
         });
-    })
-    .catch(error => {
-        console.error('Erreur :', error);
-    });
-
-    div3.appendChild(ul)
+    
+        div3.appendChild(ul)
+    }
     let div4 = document.createElement("div")
     div4.id = "buttonDiv";
     customDialog.appendChild(div4)
@@ -92,18 +102,25 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
             break;
         case "upgrade":
             //TODO ajouter des améliorations (vie/degat/?) déjà 2 à améliorer 
-        
+            let button3 = document.createElement("button")
+            var imgLife = document.createElement("img");
+            imgLife.src = "./assets/images/full_heart.png";
+            button3.id = "lifeButton"
+            button3.className = "upgradeButton"
+            button3.textContent = "+1 vie"
+            button3.appendChild(imgLife)
+            div4.appendChild(button3)
+
+            let button4 = document.createElement("button")
+            var imgDamage = document.createElement("img");
+            imgDamage.src = "./assets/images/sword.png";
+            button4.id = "damageButton"
+            button4.className = "upgradeButton"
+            button4.textContent = "+1 dégat"
+            button4.appendChild(imgDamage)
+            div4.appendChild(button4)
             break;
     }
-
-    /*if (buttons.length >= 3){
-        let button3 = document.createElement("button")
-        button3.id = "cancelButton"
-        button3.className = "customButton"
-        button3.textContent = buttons[1]
-        div3.appendChild(button3)
-    }*/
-
 
     game.appendChild(customDialog);
 
@@ -113,6 +130,8 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
 function testButton(){
     let logButton = document.getElementById("logButton")
     let restartButton = document.getElementById("restartButton")
+    let lifeButton = document.getElementById("lifeButton")
+    let damageButton = document.getElementById("damageButton")
 
     if(logButton !== null){
         logButton.addEventListener("click", () => {
@@ -156,6 +175,24 @@ function testButton(){
             location.reload();
         });
     }
+
+    
+    if(lifeButton !== null){
+        lifeButton.addEventListener("click", () => {
+            let player = document.getElementById("player")
+            player.dataset.life = parseInt(player.dataset.life) + 1;
+            console.log(player.dataset.life)
+        });
+    }
+
+    
+    if(damageButton !== null){
+        damageButton.addEventListener("click", () => {
+            console.log("damage +1")
+        });
+    }
+
+
 }
 /*
 <div id="customDialog" class="dialog">

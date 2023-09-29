@@ -155,6 +155,15 @@ button {
     width: 200px;
 }
 
+.upgradeButton {
+    height: 300px;
+}
+
+.upgradeButton img {
+    height: 70px;
+    width: 70px;
+}
+
 ul {
     display: flex;
     flex-direction: column;

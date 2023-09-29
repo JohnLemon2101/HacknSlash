@@ -77,7 +77,7 @@ function checkHP() {
         
     }
 
-    if(player.dataset.life <= 0 && isEnded == 0){
+    if(player.dataset.life <= 0){
         isEnded++;
         endGame()
     }
@@ -120,18 +120,17 @@ function endGame() {
 }
 
 function gameLoop() {
-    
+    if(isEnded == 0){
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
     // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
     checkHP();
     checkMonsterAlive()
-    
 
- 
     handlePlayerMovement();
     checkCollisionWithMonsters();
 
     // Appeler la boucle de jeu à la prochaine frame
     requestAnimationFrame(gameLoop);
+    }
 }
 

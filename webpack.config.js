@@ -2,12 +2,18 @@ const path = require('path');
 
 module.exports = { 
   mode: 'development', // Vous pouvez également utiliser 'production' ou 'none' en fonction de vos besoins.
-  entry: path.resolve(__dirname, 'assets/js/main.js'),
+  entry: {
+    bundle: [
+      path.resolve(__dirname, 'assets/js/main.js'),
+      path.resolve(__dirname, 'assets/js/dialog.js'),
+    ],
+  },
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, "."),
   },
   devServer: {
+    port: 8180,
     static: {
       directory: path.resolve(__dirname, '.'), // Dossier de sortie à servir
     },

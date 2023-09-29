@@ -10,7 +10,7 @@ var damage = 2;
 export function createPlayer() {
     const player = document.createElement("div");
     player.dataset.life = life;
-    player.dataset.maxLife = life;
+    player.dataset.initialLife = life;
     player.dataset.damage = damage;
     player.id = "player";
 

@@ -12,3 +12,7 @@ export var speedX = (speedY * windowWidth) / playerWidth;
 //info monstre
 export const monsterHeight = 50;
 export const monsterWidth = 50;
+
+//gestion de fichier
+export const filepath = "./../../score.txt";
+export const apiURL = "http://localhost:8100/file.php";

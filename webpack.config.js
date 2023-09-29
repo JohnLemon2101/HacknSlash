@@ -13,17 +13,9 @@ module.exports = {
     path: path.resolve(__dirname, "."),
   },
   devServer: {
+    port: 8180,
     static: {
       directory: path.resolve(__dirname, '.'), // Dossier de sortie à servir
-    },
-    proxy: {
-      '/assets/php': {
-        target: 'http://localhost:8080', // L'URL de votre serveur PHP local
-        changeOrigin: true,
-        pathRewrite: {
-          '^/assets/php': '', // Supprimer le préfixe /assets/php de la requête
-        },
-      },
     },
   },
 };

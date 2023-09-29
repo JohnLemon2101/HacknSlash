@@ -140,11 +140,19 @@ a,button {
     background-color: white;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 420px;
+}
+
+#buttonDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
 }
 
 button {
-    margin-top: 10px;
-    width: 150px;
+    width: 200px;
 }
 
 ul {
@@ -152,9 +160,8 @@ ul {
     flex-direction: column;
     justify-content: center;
     margin-top: 2px;
-    width: 50%;
-    margin-left: 115px;
-    margin-right: 45px;
+    width: 30%;
+    margin-left: 40%;
 }
 
 li {

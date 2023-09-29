@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     
     if (!file_exists($nomFichier)) {
         // Le fichier existe
-         file_put_contents($nomFichier, "CGE: 50,");
+         file_put_contents($nomFichier, "");
     }
 
     $contenu = file_get_contents($nomFichier);
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
              return $valueB - $valueA;
         });
 
-        $response["data"] = $arrayString;
+        $response["data"] = array_slice($arrayString, 0, 5);
         
         header('Content-Type: application/json');
         echo json_encode($response);
@@ -66,41 +66,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Le script a été appelé avec une requête HTTP POST
-    return var_dump($_POST);
-} 
-/*
-function ecrireDansFichier($texte) {
-    // Ouvre le fichier en mode écriture (crée le fichier s'il n'existe pas)
-    return $_POST;
-    
-    $nomFichier = "./../../monFichier.txt";
-    
-    $fichier = fopen($nomFichier, "w");
 
-    // Vérifie si l'ouverture du fichier a réussi
+    $nomFichier = $_POST["filePath"];
+    $playerName = $_POST["name"];
+    $score = $_POST["score"];
+    $response = array();
+
+    $fichier = fopen($nomFichier, "a");
+
     if ($fichier === false) {
-        return "Impossible d'ouvrir le fichier pour l'écriture.";
+        // Gestion de l'erreur, par exemple, le fichier n'a pas pu être ouvert
+        $response["error"] = "Impossible d'ouvrir le fichier pour l'écriture.";
+    } else {
+
+        $contenu = file_get_contents($nomFichier);
+        if($contenu == ''){
+            $texte = $playerName.": ".$score;
+        }
+        else{
+            $texte = ",".$playerName.": ".$score;
+        }
+        
+        $resultat = fwrite($fichier, $texte);
+
+        if ($resultat === false) {
+            // Gestion de l'erreur, par exemple, l'écriture a échoué
+            $response["error"] = "Une erreur s'est produite lors de l'écriture dans le fichier.";
+        } else {
+            $response["message"] = "Écriture réussie dans le fichier : " . $nomFichier;
+        }
+
+        fclose($fichier); // Fermez le fichier après l'écriture
     }
 
-    // Écrit le texte dans le fichier
-    $resultat = fwrite($fichier, $texte);
-
-    // Vérifie si l'écriture a réussi
-    if ($resultat === false) {
-        return "Une erreur s'est produite lors de l'écriture dans le fichier.";
-    }
-
-    // Ferme le fichier
-    fclose($fichier);
-
-    return "Écriture réussie dans le fichier : " . $nomFichier;
-}*/
-/*
-// Utilisation de la fonction pour écrire dans un fichier
-$nomDuFichier = "monFichier.txt";
-$texteAEcrire = "Ceci est le texte à écrire dans le fichier.";
-
-$resultatEcriture = ecrireDansFichier($nomDuFichier, $texteAEcrire);
-echo $resultatEcriture;
-return $resultatEcriture;*/
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
 ?>
+

@@ -4,7 +4,7 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { display } from './dialog.js';
+import { displayGameOver } from './dialog.js';
 
 var numMonsters = 20;
 let player;
@@ -109,7 +109,7 @@ function endGame() {
         monster.remove();
     });
 
-    display("gameOver");
+    displayGameOver("gameOver", (numMonsters - 3));
     
     /*setTimeout(function () {
         //alert("Vous avez perdu :) vous avez survécu jusqu'à la vague " + (numMonsters - 3))

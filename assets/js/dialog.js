@@ -5,9 +5,9 @@ var customDialog;
 const game = document.getElementById("game");
 var score;
 
-export function display(dialogId) {
+export function displayGameOver(dialogId, score) {
     let dialog = document.getElementById(dialogId);
-    createDialogContent(dialogId, "Game Over", "votre score est de ", " vague(s)", true, "playerName", "gameOver", 3)
+    createDialogContent(dialogId, "Game Over", "votre score est de ", " vague(s)", true, "playerName", "gameOver", score)
     dialog.style.display = "block";
     testButton()
 }
@@ -57,12 +57,15 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         let score = 1;
         response.data.data.forEach(item => {
             // item contient chaque objet de response.data
-            const li = document.createElement("li");
-            li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
-            ul.appendChild(li);
-            console.log(item); // Affiche la valeur de la clé "key" de l'objet
-            // Faites ce que vous devez faire avec chaque élément ici
-            score++;
+            if(item){
+                const li = document.createElement("li");
+                li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
+                ul.appendChild(li);
+                console.log(item); // Affiche la valeur de la clé "key" de l'objet
+                // Faites ce que vous devez faire avec chaque élément ici
+                score++;
+            }
+            
         });
     })
     .catch(error => {
@@ -71,13 +74,14 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
 
     div3.appendChild(ul)
     let div4 = document.createElement("div")
+    div4.id = "buttonDiv";
     customDialog.appendChild(div4)
 
     switch(buttonsType){
         case "gameOver":
             let button1 = document.createElement("button")
             button1.id = "logButton"
-            button1.textContent = "Enregistrer"
+            button1.textContent = "save & play"
             div4.appendChild(button1)
 
             let button2 = document.createElement("button")
@@ -100,9 +104,6 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         div3.appendChild(button3)
     }*/
 
-    div4.style.width = "320px";
-    div4.style.display = "flex";
-    div4.style.justifyContent = "space-between"
 
     game.appendChild(customDialog);
 
@@ -124,45 +125,28 @@ function testButton(){
             const formData = new FormData();
 
             // Ajoutez vos valeurs au FormData
+            formData.append('filePath', filepath);
             formData.append('name', playerName.value);
             formData.append('score', score);
 
             // URL du script PHP sur votre serveur
-            const params = new URLSearchParams({ filePath: filepath });
-            const urlAvecParametres = `${apiURL}?${params}`;
+            const urlAvecParametres = `${apiURL}`;
             
-            axios.post(urlAvecParametres, formData)
+            axios.post(urlAvecParametres, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data', // Définissez le type de contenu comme "multipart/form-data"
+                },
+                timeout: 10000, // 10 secondes
+              })
             .then(response => {
               // Traitement de la réponse ici
               console.log(response.data); // Les données renvoyées par le serveur
             })
             .catch(error => {
-              console.error('Erreur :', error);
+                location.reload();
             });
-            /*
-            const jsonData = JSON.stringify(data);
 
-            const blob = new Blob([jsonData], { type: "application/json" });
-            // Créez un lien de téléchargement pour le fichier JSON
-            const downloadLink = document.createElement("a");
-            downloadLink.href = URL.createObjectURL(blob);
-            downloadLink.download = "donnees.json"; // Nom du fichier JSON à télécharger
-            downloadLink.textContent = "Télécharger le fichier JSON";
-
-            // Ajoutez le lien au DOM
-            document.body.appendChild(downloadLink);
-
-            // Cliquez sur le lien pour déclencher le téléchargement
-            downloadLink.click();
-              */
-            
-            //const jsonData = JSON.stringify(dataToWrite, null, 2); // Convertir l'objet en chaîne JSON avec mise en forme
-            
-            //fs.writeFileSync("score.json", jsonData, "utf-8");
-            
-
-
-            console.log("logButton !");
+           
 
         });
     }

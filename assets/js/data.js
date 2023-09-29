@@ -15,4 +15,4 @@ export const monsterWidth = 50;
 
 //gestion de fichier
 export const filepath = "./../../score.txt";
-export const apiURL = "http://localhost:8000/file.php";
+export const apiURL = "http://localhost:8100/file.php";

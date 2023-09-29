@@ -1,6 +1,9 @@
+import { filepath, apiURL } from './data.js';
+import axios from 'axios';
 
 var customDialog;
 const game = document.getElementById("game");
+var score;
 
 export function display(dialogId) {
     let dialog = document.getElementById(dialogId);
@@ -10,6 +13,7 @@ export function display(dialogId) {
 }
 
 export function createDialogContent (dialogId, title, text, text2, isInput = false, inputName, buttonsType, optional = ""){
+    score = optional;
     customDialog = document.getElementById(dialogId);
     let div1 = document.createElement("div")
     let titleElement = document.createElement("h1");
@@ -30,6 +34,7 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         input.placeholder = "3 initiales"
         input.maxLength = 3
         input.name = inputName
+        input.id = inputName
     
         
         customDialog.appendChild(div2)
@@ -37,20 +42,48 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         div2.appendChild(input)
     }
 
+    const params = new URLSearchParams({ filePath: filepath });
+    const urlAvecParametres = `${apiURL}?${params}`;
+    
     let div3 = document.createElement("div")
     customDialog.appendChild(div3)
+
+    const ul = document.createElement("ul");
+
+    axios.get(urlAvecParametres)
+    .then(response => {
+        console.log(response)
+        // Traitement de la réponse icidw
+        let score = 1;
+        response.data.data.forEach(item => {
+            // item contient chaque objet de response.data
+            const li = document.createElement("li");
+            li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
+            ul.appendChild(li);
+            console.log(item); // Affiche la valeur de la clé "key" de l'objet
+            // Faites ce que vous devez faire avec chaque élément ici
+            score++;
+        });
+    })
+    .catch(error => {
+        console.error('Erreur :', error);
+    });
+
+    div3.appendChild(ul)
+    let div4 = document.createElement("div")
+    customDialog.appendChild(div4)
 
     switch(buttonsType){
         case "gameOver":
             let button1 = document.createElement("button")
             button1.id = "logButton"
             button1.textContent = "Enregistrer"
-            div3.appendChild(button1)
+            div4.appendChild(button1)
 
             let button2 = document.createElement("button")
             button2.id = "restartButton"
             button2.textContent = "Rejouer"
-            div3.appendChild(button2)
+            div4.appendChild(button2)
 
             break;
         case "upgrade":
@@ -67,9 +100,9 @@ export function createDialogContent (dialogId, title, text, text2, isInput = fal
         div3.appendChild(button3)
     }*/
 
-    div3.style.width = "320px";
-    div3.style.display = "flex";
-    div3.style.justifyContent = "space-between"
+    div4.style.width = "320px";
+    div4.style.display = "flex";
+    div4.style.justifyContent = "space-between"
 
     game.appendChild(customDialog);
 
@@ -84,6 +117,51 @@ function testButton(){
         logButton.addEventListener("click", () => {
             // TODO faire un enregistrement du score avec un pseudo de 3 lettres dans un txt ou autre (JSON ? peut etre plus simple)
             //TODO afficher les 5 premiers des scores.
+           
+            const playerName = document.getElementById("playerName");
+
+            // Créez un objet FormData vide
+            const formData = new FormData();
+
+            // Ajoutez vos valeurs au FormData
+            formData.append('name', playerName.value);
+            formData.append('score', score);
+
+            // URL du script PHP sur votre serveur
+            const params = new URLSearchParams({ filePath: filepath });
+            const urlAvecParametres = `${apiURL}?${params}`;
+            
+            axios.post(urlAvecParametres, formData)
+            .then(response => {
+              // Traitement de la réponse ici
+              console.log(response.data); // Les données renvoyées par le serveur
+            })
+            .catch(error => {
+              console.error('Erreur :', error);
+            });
+            /*
+            const jsonData = JSON.stringify(data);
+
+            const blob = new Blob([jsonData], { type: "application/json" });
+            // Créez un lien de téléchargement pour le fichier JSON
+            const downloadLink = document.createElement("a");
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.download = "donnees.json"; // Nom du fichier JSON à télécharger
+            downloadLink.textContent = "Télécharger le fichier JSON";
+
+            // Ajoutez le lien au DOM
+            document.body.appendChild(downloadLink);
+
+            // Cliquez sur le lien pour déclencher le téléchargement
+            downloadLink.click();
+              */
+            
+            //const jsonData = JSON.stringify(dataToWrite, null, 2); // Convertir l'objet en chaîne JSON avec mise en forme
+            
+            //fs.writeFileSync("score.json", jsonData, "utf-8");
+            
+
+
             console.log("logButton !");
 
         });

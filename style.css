@@ -146,3 +146,19 @@ button {
     margin-top: 10px;
     width: 150px;
 }
+
+ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2px;
+    width: 50%;
+    margin-left: 115px;
+    margin-right: 45px;
+}
+
+li {
+    list-style: none;
+    padding: 1px;
+    text-align: left;
+}

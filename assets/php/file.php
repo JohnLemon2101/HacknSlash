@@ -12,8 +12,6 @@ header("Access-Control-Allow-Headers: Content-Type");
 // Indiquez que les en-têtes CORS doivent être inclus dans la réponse
 header("Access-Control-Allow-Credentials: true");
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Le script a été appelé avec une requête HTTP GET
     

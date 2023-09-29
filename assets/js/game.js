@@ -89,15 +89,17 @@ function checkHP() {
 function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
     if (monsters.length === 0) {
-        if((numVague) % 5 === 0 && !isUpdated){
+        if((numVague) % 5 === 0){
+            if(!isUpdated){
+                displayUpgrade("upgrade", numVague);
+            }
             isUpdated = true;
-            displayUpgrade("upgrade");
             console.log(document.getElementById("upgrade").style.display)
-            /*if(document.getElementById("upgrade").style.display == "none"){
+            if(document.getElementById("upgrade").style.display == "none"){
                 isUpdated = false;
                 numVague++;
                 spawnMonsters(numVague + numMonstersAtStart);                
-            }*/
+            }
         } else {
             if(!isUpdated){
                 numVague++;

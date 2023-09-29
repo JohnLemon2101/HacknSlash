@@ -12,11 +12,14 @@ export function displayGameOver(dialogId, score) {
     testButton()
 }
 
-export function displayUpgrade(dialogId) {
+export function displayUpgrade(dialogId, vagues) {
     let dialog = document.getElementById(dialogId);
-    createDialogContent(dialogId, "Upgrade", "Veuillez choisir votre améloration", "", false, "", "upgrade")
+    if(vagues == 5){
+        createDialogContent(dialogId, "Upgrade", "Veuillez choisir votre améloration", "", false, "", "upgrade")
+        
+        testButton()
+    }
     dialog.style.display = "block";
-    testButton()
 }
 
 function createDialogContent (dialogId, title, text, text2 = "", isInput = false, inputName, buttonsType, optional = ""){
@@ -61,7 +64,6 @@ function createDialogContent (dialogId, title, text, text2 = "", isInput = false
     
         axios.get(urlAvecParametres)
         .then(response => {
-            console.log(response)
             // Traitement de la réponse icidw
             let score = 1;
             response.data.data.forEach(item => {
@@ -70,7 +72,6 @@ function createDialogContent (dialogId, title, text, text2 = "", isInput = false
                     const li = document.createElement("li");
                     li.textContent = score + "# " +item; // Définissez le texte de l'élément <li> sur l'élément de données
                     ul.appendChild(li);
-                    console.log(item); // Affiche la valeur de la clé "key" de l'objet
                     // Faites ce que vous devez faire avec chaque élément ici
                     score++;
                 }
@@ -159,7 +160,6 @@ function testButton(){
               })
             .then(response => {
               // Traitement de la réponse ici
-              console.log(response.data); // Les données renvoyées par le serveur
             })
             .catch(error => {
                 location.reload();
@@ -180,8 +180,22 @@ function testButton(){
     if(lifeButton !== null){
         lifeButton.addEventListener("click", () => {
             let player = document.getElementById("player")
+ 
+            player.dataset.initialLife = parseInt(player.dataset.initialLife) + 1;
             player.dataset.life = parseInt(player.dataset.life) + 1;
-            console.log(player.dataset.life)
+
+
+            let hp = document.getElementById("hp");
+            hp.style.width = 20 * player.dataset.initialLife + "px";
+
+            let imageHeart = document.createElement("img");
+            imageHeart.src = "./assets/images/full_heart.png";
+            imageHeart.className = "heart";
+            imageHeart.id = "heart" + parseInt(player.dataset.initialLife - 1);
+            hp.appendChild(imageHeart);
+
+
+            document.getElementById("upgrade").style.display = "none";
         });
     }
 

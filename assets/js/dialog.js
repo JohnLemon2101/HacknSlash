@@ -202,7 +202,11 @@ function testButton(){
     
     if(damageButton !== null){
         damageButton.addEventListener("click", () => {
-            console.log("damage +1")
+            let player = document.getElementById("player")
+
+            player.dataset.damage = parseInt(player.dataset.damage) + 1;
+            
+            document.getElementById("upgrade").style.display = "none";
         });
     }
 

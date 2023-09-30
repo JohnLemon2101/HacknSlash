@@ -120,6 +120,17 @@ function createDialogContent (dialogId, title, text, text2 = "", isInput = false
             button4.textContent = "+1 dégat"
             button4.appendChild(imgDamage)
             div4.appendChild(button4)
+
+            let button5 = document.createElement("button")
+            var imgRegen = document.createElement("img");
+            imgRegen.src = "./assets/images/full_heart.png";
+            button5.id = "regenButton"
+            button5.className = "upgradeButton"
+            button5.textContent = "full regen"
+            button5.appendChild(imgRegen)
+            div4.appendChild(button5)
+
+            customDialog.style.width = "630px"
             break;
     }
 
@@ -133,6 +144,7 @@ function testButton(){
     let restartButton = document.getElementById("restartButton")
     let lifeButton = document.getElementById("lifeButton")
     let damageButton = document.getElementById("damageButton")
+    let regenButton = document.getElementById("regenButton")
 
     if(logButton !== null){
         logButton.addEventListener("click", () => {
@@ -199,12 +211,21 @@ function testButton(){
         });
     }
 
-    
     if(damageButton !== null){
         damageButton.addEventListener("click", () => {
             let player = document.getElementById("player")
 
             player.dataset.damage = parseInt(player.dataset.damage) + 1;
+            
+            document.getElementById("upgrade").style.display = "none";
+        });
+    }
+
+    if(regenButton !== null){
+        regenButton.addEventListener("click", () => {
+            let player = document.getElementById("player")
+
+            player.dataset.life = player.dataset.initialLife
             
             document.getElementById("upgrade").style.display = "none";
         });

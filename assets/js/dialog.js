@@ -233,16 +233,3 @@ function testButton(){
 
 
 }
-/*
-<div id="customDialog" class="dialog">
-            <p>Ceci est une boîte de dialogue personnalisée.</p>
-            <button id="customButton">Option personnalisée</button>
-        </div>
-
-*/
-/*
-customButton.addEventListener("click", () => {
-    // Action personnalisée à effectuer après avoir cliqué sur le bouton
-    console.log("Option personnalisée sélectionnée !");
-    customDialog.style.display = "none";
-});*/

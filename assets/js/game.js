@@ -4,10 +4,15 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver, displayUpgrade } from './dialog.js';
+import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog } from './dialog.js';
+
+
+//TODO bille multi color :)
+//TODO ajout d'un boss tout les x vagues ?
+//TODO Mettre une menu avec echap ?
 
 const numMonstersAtStart = 3;
-var numVague = 5;
+var numVague = 1;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
@@ -26,7 +31,11 @@ export function initializeGame() {
 
     player = createPlayer();
 
-    spawnMonsters(numMonstersAtStart);
+    createGameOverDialog();
+
+    createUpgradeDialog()
+
+    spawnMonsters(numVague + numMonstersAtStart);
 
     document.addEventListener("keydown", handleKeyDown);
     
@@ -60,10 +69,10 @@ function handlePlayerMovement() {
     var targetX = playerRect.left; // Position cible en X
     var targetY = playerRect.top; // Position cible en Y
 
-    if(keysPressed["w"] && targetY > 0) { targetY -= speedY; }
-    if(keysPressed["s"] && targetY < windowHeight - playerHeight) { targetY += speedY;  }
-    if(keysPressed["a"] && targetX > 0) { targetX -= speedX;  }
-    if(keysPressed["d"] && targetX < windowWidth - playerWidth) { targetX += speedX; }
+    if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 0) { targetY -= speedY; }
+    if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight) { targetY += speedY;  }
+    if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 0) { targetX -= speedX;  }
+    if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth) { targetX += speedX; }
 
     player.style.top = targetY + "px";
     player.style.left = targetX + "px";
@@ -77,7 +86,6 @@ function checkHP() {
         } else {
             heart.src = "./assets/images/empty_heart.png";
         }
-        
     }
 
     if(player.dataset.life <= 0){
@@ -88,13 +96,12 @@ function checkHP() {
 
 function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
-    if (monsters.length === 0) {
+    if (monsters.length === 0 && isEnded == 0) {
         if((numVague) % 5 === 0){
             if(!isUpdated){
-                displayUpgrade("upgrade", numVague);
+                displayUpgrade(numVague);
             }
             isUpdated = true;
-            console.log(document.getElementById("upgrade").style.display)
             if(document.getElementById("upgrade").style.display == "none"){
                 isUpdated = false;
                 numVague++;
@@ -107,9 +114,13 @@ function checkMonsterAlive() {
             }         
         }
     }
+    
 }
 
 function spawnMonsters(nb) {
+    
+    let vagues = document.getElementById("vagues");
+    vagues.textContent = "Vagues " + (nb - 3);
     for(let i = 0; i < nb; i++){
         createMonster(Math.floor(Math.random() * 4));
     }
@@ -127,13 +138,14 @@ function endGame() {
         monster.remove();
     });
 
-    displayGameOver("gameOver", (numVague));
+    displayGameOver("votre score est de ", " vague(s)", numVague);
 }
 
 function gameLoop() {
     if(isEnded == 0){
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
     // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
+
     checkHP();
     checkMonsterAlive()
 

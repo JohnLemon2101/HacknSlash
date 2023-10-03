@@ -14,5 +14,6 @@ export const monsterHeight = 50;
 export const monsterWidth = 50;
 
 //gestion de fichier
+const urlActuelle = window.location.href.slice(0, -5);
 export const filepath = "./../../score.txt";
-export const apiURL = "http://localhost:8100/file.php";
+export const apiURL = urlActuelle + "8280/file.php";

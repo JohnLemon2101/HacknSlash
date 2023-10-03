@@ -158,6 +158,24 @@ a,button {
     margin-top: 10px;
 }
 
+#upgradeDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Style pour les boutons sélectionnés */
+button.selected {
+    background-color: #4CAF50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    font-weight: bold; /* Texte en gras */
+    border: 2px solid #4CAF50; /* Bordure solide */
+    border-radius: 4px; /* Coins arrondis */
+}
+
+
 button {
     width: 200px;
 }
@@ -169,6 +187,11 @@ button {
 .upgradeButton img {
     height: 70px;
     width: 70px;
+    user-select: none;
+}
+
+img {
+    user-select: none;
 }
 
 ul {

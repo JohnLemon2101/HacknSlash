@@ -4,14 +4,13 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver, displayUpgrade } from './dialog.js';
+import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog } from './dialog.js';
 
 
 //TODO bille multi color :)
-//TODO ajout du numéro de la vague en haut de l'écran
 //TODO ajout d'un boss tout les x vagues ?
-//TODO mettre en pause quelque seconde avant l'upgrade parce que sinon on clique dessus ou mettre une confirmation
 //TODO Mettre une menu avec echap ?
+
 const numMonstersAtStart = 3;
 var numVague = 1;
 let player;
@@ -31,6 +30,10 @@ export function initializeGame() {
     // Initialisation du jeu
 
     player = createPlayer();
+
+    createGameOverDialog();
+
+    createUpgradeDialog()
 
     spawnMonsters(numVague + numMonstersAtStart);
 
@@ -96,7 +99,7 @@ function checkMonsterAlive() {
     if (monsters.length === 0 && isEnded == 0) {
         if((numVague) % 5 === 0){
             if(!isUpdated){
-                displayUpgrade("upgrade", numVague);
+                displayUpgrade(numVague);
             }
             isUpdated = true;
             if(document.getElementById("upgrade").style.display == "none"){
@@ -135,7 +138,7 @@ function endGame() {
         monster.remove();
     });
 
-    displayGameOver("gameOver", (numVague));
+    displayGameOver("votre score est de ", " vague(s)", numVague);
 }
 
 function gameLoop() {

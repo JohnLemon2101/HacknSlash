@@ -35,6 +35,11 @@ export function createPlayer() {
 
     map.appendChild(player);
 
+
+    
+    const vagues = document.createElement("div");
+    vagues.id = "vagues"
+    map.appendChild(vagues);
     map.appendChild(hp);
     
 

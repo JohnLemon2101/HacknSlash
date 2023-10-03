@@ -83,7 +83,6 @@ function checkHP() {
         } else {
             heart.src = "./assets/images/empty_heart.png";
         }
-        
     }
 
     if(player.dataset.life <= 0){
@@ -94,7 +93,7 @@ function checkHP() {
 
 function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
-    if (monsters.length === 0) {
+    if (monsters.length === 0 && isEnded == 0) {
         if((numVague) % 5 === 0){
             if(!isUpdated){
                 displayUpgrade("upgrade", numVague);
@@ -112,9 +111,13 @@ function checkMonsterAlive() {
             }         
         }
     }
+    
 }
 
 function spawnMonsters(nb) {
+    
+    let vagues = document.getElementById("vagues");
+    vagues.textContent = "Vagues " + (nb - 3);
     for(let i = 0; i < nb; i++){
         createMonster(Math.floor(Math.random() * 4));
     }
@@ -139,6 +142,7 @@ function gameLoop() {
     if(isEnded == 0){
     // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
     // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
+
     checkHP();
     checkMonsterAlive()
 

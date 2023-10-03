@@ -24,6 +24,8 @@ map.style.height = windowHeight + "px";
 
 var isEnded = 0;
 let isUpdated = false;
+let isGamePaused = false;
+
 const keysPressed = {};
 
 export function initializeGame() {
@@ -49,7 +51,29 @@ export function initializeGame() {
 
 function handleKeyDown(event) {
     keysPressed[event.key] = true;
+    if(event.key === "Escape"){
+        togglePauseGame();
+    }
 }
+
+function togglePauseGame() {
+    player.dataset.isGamePaused = !JSON.parse(player.dataset.isGamePaused); // Inversez l'état de la pause
+    let escapeDialog = document.getElementById("escape");
+
+    console.log(JSON.parse(player.dataset.isGamePaused))
+    if (player.dataset.isGamePaused) {
+        escapeDialog.style.display = "block";
+        // Mettez ici votre logique pour mettre en pause le jeu
+        // Par exemple, arrêtez la boucle de jeu ou affichez un écran de pause.
+        // Vous pouvez également désactiver les interactions du joueur.
+    } else {
+        escapeDialog.style.display = "none";
+        // Mettez ici votre logique pour reprendre le jeu
+        // Réactivez la boucle de jeu et masquez l'écran de pause.
+        // Réactivez les interactions du joueur.
+    }
+}
+
 
 function handleKeyUp(event) {
     delete keysPressed[event.key];
@@ -142,18 +166,22 @@ function endGame() {
 }
 
 function gameLoop() {
-    if(isEnded == 0){
-    // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
-    // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
-
-    checkHP();
-    checkMonsterAlive()
-
-    handlePlayerMovement();
-    checkCollisionWithMonsters();
-
-    // Appeler la boucle de jeu à la prochaine frame
-    requestAnimationFrame(gameLoop);
+    if(!JSON.parse(player.dataset.isGamePaused)) {
+        if(isEnded == 0){
+            // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
+            // Gestionnaire d'événement pour déclencher le tir (par exemple, un clic de souris)
+        
+            checkHP();
+            checkMonsterAlive()
+        
+            handlePlayerMovement();
+            checkCollisionWithMonsters();
+        
+            // Appeler la boucle de jeu à la prochaine frame
+        }
     }
+    
+    requestAnimationFrame(gameLoop);
+    
 }
 

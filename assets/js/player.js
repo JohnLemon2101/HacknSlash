@@ -12,6 +12,7 @@ export function createPlayer() {
     player.dataset.life = life;
     player.dataset.initialLife = life;
     player.dataset.damage = damage;
+    player.dataset.isGamePaused = false;
     player.id = "player";
 
 

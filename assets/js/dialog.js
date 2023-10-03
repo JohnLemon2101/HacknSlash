@@ -191,6 +191,96 @@ export function createUpgradeDialog (){
 }
 
 
+export function createEchapDialog (){
+    customDialog = document.getElementById("upgrade");
+    let div1 = document.createElement("div")
+    let titleElement = document.createElement("h1");
+    let textElement = document.createElement("p");
+
+    titleElement.textContent = "Upgrade";
+    textElement.textContent = "Veuillez choisir votre améloration";
+
+    customDialog.appendChild(div1)
+
+    div1.appendChild(titleElement)
+    div1.appendChild(textElement)
+    
+    let div4 = document.createElement("div")
+    div4.id = "upgradeDiv";
+    customDialog.appendChild(div4)
+
+    let buttonLife = document.createElement("button")
+    var imgLife = document.createElement("img");
+    imgLife.src = "./assets/images/full_heart.png";
+    buttonLife.id = "lifeButton"
+    buttonLife.className = "upgradeButton"
+    buttonLife.textContent = "+1 vie"
+    buttonLife.setAttribute("data-selected", "false");
+    buttonLife.appendChild(imgLife)
+    div4.appendChild(buttonLife)  
+
+    let buttonDamage = document.createElement("button")
+    var imgDamage = document.createElement("img");
+    imgDamage.src = "./assets/images/sword.png";
+    buttonDamage.id = "damageButton"
+    buttonDamage.className = "upgradeButton"
+    buttonDamage.textContent = "+1 dégat"
+    buttonDamage.setAttribute("data-selected", "false");
+    buttonDamage.appendChild(imgDamage)
+    div4.appendChild(buttonDamage)
+
+    let buttonRegen = document.createElement("button")
+    var imgRegen = document.createElement("img");
+    imgRegen.src = "./assets/images/full_heart.png";
+    buttonRegen.id = "regenButton"
+    buttonRegen.className = "upgradeButton"
+    buttonRegen.textContent = "full regen"
+    buttonRegen.setAttribute("data-selected", "false");
+    buttonRegen.appendChild(imgRegen)
+    div4.appendChild(buttonRegen)
+
+    let buttons = [buttonLife, buttonDamage, buttonRegen];
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            buttons.forEach((otherButton) => {
+                if (otherButton !== button) {
+                    otherButton.setAttribute("data-selected", "false");
+                    otherButton.classList.remove("selected");
+                }
+            });
+
+            let isSelected = button.getAttribute("data-selected");
+            if (isSelected === "false") {
+                button.setAttribute("data-selected", "true");
+                button.classList.add("selected");
+            } else {
+                button.setAttribute("data-selected", "false");
+                button.classList.remove("selected");
+            }
+        });
+    });
+
+
+    customDialog.style.width = "630px"
+    
+    let div5 = document.createElement("div")
+    div5.id = "buttonDiv";
+    div5.style.justifyContent = "center";
+    customDialog.appendChild(div5)
+
+
+    let button1 = document.createElement("button")
+    button1.id = "validButton"
+    button1.textContent = "Valider"
+    div5.appendChild(button1)
+
+    game.appendChild(customDialog);
+
+    customDialog.style.display = "none";
+}
+
+
 function activeButton(){
     let logButton = document.getElementById("logButton")
     let restartButton = document.getElementById("restartButton")

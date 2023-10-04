@@ -22,6 +22,17 @@ export function displayUpgrade(vagues) {
     dialog.style.display = "block";
 }
 
+export function displayEscape(isGamePaused) {
+    let dialog = document.getElementById("escape");
+
+    if (isGamePaused) {
+        activeButton();
+        dialog.style.display = "block";
+    } else {
+        dialog.style.display = "none";
+    }
+}
+
 export function createGameOverDialog (){
     customDialog = document.getElementById("gameOver");
     let div1 = document.createElement("div")
@@ -99,7 +110,6 @@ export function createGameOverDialog (){
 
     customDialog.style.display = "none";
 }
-
 
 export function createUpgradeDialog (){
     customDialog = document.getElementById("upgrade");
@@ -190,35 +200,26 @@ export function createUpgradeDialog (){
     customDialog.style.display = "none";
 }
 
-/*
 export function createEchapDialog (){
-    customDialog = document.getElementById("upgrade");
+    customDialog = document.getElementById("escape");
     let div1 = document.createElement("div")
     let titleElement = document.createElement("h1");
-    let textElement = document.createElement("p");
 
-    titleElement.textContent = "Upgrade";
-    textElement.textContent = "Veuillez choisir votre améloration";
+    titleElement.textContent = "Menu";
 
     customDialog.appendChild(div1)
-
     div1.appendChild(titleElement)
-    div1.appendChild(textElement)
     
+
     let div4 = document.createElement("div")
-    div4.id = "upgradeDiv";
+    div4.id = "menuDiv";
     customDialog.appendChild(div4)
 
-    let buttonLife = document.createElement("button")
-    var imgLife = document.createElement("img");
-    imgLife.src = "./assets/images/full_heart.png";
-    buttonLife.id = "lifeButton"
-    buttonLife.className = "upgradeButton"
-    buttonLife.textContent = "+1 vie"
-    buttonLife.setAttribute("data-selected", "false");
-    buttonLife.appendChild(imgLife)
-    div4.appendChild(buttonLife)  
-
+    let restart = document.createElement("button")
+    restart.id = "restartMenuButton"
+    restart.textContent = "restart"
+    div4.appendChild(restart)
+/*
     let buttonDamage = document.createElement("button")
     var imgDamage = document.createElement("img");
     imgDamage.src = "./assets/images/sword.png";
@@ -260,10 +261,10 @@ export function createEchapDialog (){
             }
         });
     });
+*/
 
-
-    customDialog.style.width = "630px"
-    
+    //customDialog.style.width = "630px"
+    /*
     let div5 = document.createElement("div")
     div5.id = "buttonDiv";
     div5.style.justifyContent = "center";
@@ -274,17 +275,18 @@ export function createEchapDialog (){
     button1.id = "validButton"
     button1.textContent = "Valider"
     div5.appendChild(button1)
-
+*/
     game.appendChild(customDialog);
 
     customDialog.style.display = "none";
-}*/
+}
 
 
 function activeButton(){
     let logButton = document.getElementById("logButton")
     let restartButton = document.getElementById("restartButton")
     let validButton = document.getElementById("validButton")
+    let restartMenuButton = document.getElementById("restartMenuButton")
 
     if(logButton !== null){
         logButton.addEventListener("click", () => {           
@@ -373,6 +375,12 @@ function activeButton(){
                 document.getElementById("upgrade").style.display = "none";
             }
             
+        });
+    }
+
+    if(restartMenuButton !== null){
+        restartMenuButton.addEventListener("click", () => {
+            location.reload();
         });
     }
 }

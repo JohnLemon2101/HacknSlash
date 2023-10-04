@@ -18,25 +18,27 @@ var targetX = 0;
 var targetY = 0;
 
 export function startShooting(x, y, player) {
-    damage = player.dataset.damage;
-    let playerHitbox = player.getBoundingClientRect();
+    if(!JSON.parse(player.dataset.isGamePaused)) {
+        damage = player.dataset.damage;
+        let playerHitbox = player.getBoundingClientRect();
 
-    const projectile = document.createElement("div");
-    projectile.className = "projectile"; // Appliquez des styles CSS pour le projectile
-    projectile.dataset.damage = damage;
-    map.appendChild(projectile);
+        const projectile = document.createElement("div");
+        projectile.className = "projectile"; // Appliquez des styles CSS pour le projectile
+        projectile.dataset.damage = damage;
+        map.appendChild(projectile);
 
-    projectileX = playerHitbox.left; // Position X initiale du projectile
-    projectileY = playerHitbox.top + playerHitbox.height / 2; // Position Y initiale du projectile
+        projectileX = playerHitbox.left; // Position X initiale du projectile
+        projectileY = playerHitbox.top + playerHitbox.height / 2; // Position Y initiale du projectile
 
-    projectile.style.left = projectileX + "px";
-    projectile.style.top = projectileY + "px";
-            
-    targetX = x;
-    targetY = y;     
+        projectile.style.left = projectileX + "px";
+        projectile.style.top = projectileY + "px";
+                
+        targetX = x;
+        targetY = y;     
 
-    isShooting = true;
-    moveProjectile(projectileX, projectileY, targetX, targetY, projectile)
+        isShooting = true;
+        moveProjectile(projectileX, projectileY, targetX, targetY, projectile)
+    }
     
 }
 
@@ -61,18 +63,21 @@ function moveProjectile(projectileX, projectileY, targetX, targetY, projectile) 
                 projHitBox.right < windowWidth &&
                 projHitBox.bottom < windowHeight 
             ) {
-                projectileX += moveX;
-                projectileY += moveY;
+                
+                if(!JSON.parse(player.dataset.isGamePaused)) {
+                    projectileX += moveX;
+                    projectileY += moveY;
 
-                projectile.style.left = projectileX + "px";
-                projectile.style.top = projectileY + "px";
-
+                    projectile.style.left = projectileX + "px";
+                    projectile.style.top = projectileY + "px";
+                }
                 requestAnimationFrame(updatePosition); // Demander une nouvelle frame pour la mise à jour continue
             
             }else{
                 stopShooting(projectile);
             }
         }
+        
         // Lancer la mise à jour de la position
         updatePosition();
     }

@@ -190,7 +190,7 @@ export function createUpgradeDialog (){
     customDialog.style.display = "none";
 }
 
-
+/*
 export function createEchapDialog (){
     customDialog = document.getElementById("upgrade");
     let div1 = document.createElement("div")
@@ -278,7 +278,7 @@ export function createEchapDialog (){
     game.appendChild(customDialog);
 
     customDialog.style.display = "none";
-}
+}*/
 
 
 function activeButton(){

@@ -59,22 +59,25 @@ export function createMonster(life) {
         const playerRect = player.getBoundingClientRect();
         const monsterRect = monster.getBoundingClientRect();
 
-        const deltaX = playerRect.left - monsterRect.left;
-        const deltaY = playerRect.top - monsterRect.top;
+        
+        if(!JSON.parse(player.dataset.isGamePaused)) {
+            const deltaX = playerRect.left - monsterRect.left;
+            const deltaY = playerRect.top - monsterRect.top;
 
-        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        const moveX = (deltaX / distance) * monsterSpeed;
-        const moveY = (deltaY / distance) * monsterSpeed;
+            const moveX = (deltaX / distance) * monsterSpeed;
+            const moveY = (deltaY / distance) * monsterSpeed;
 
-        // Mettez à jour la position du monstre
-        monsterX += moveX;
-        monsterY += moveY;
+            // Mettez à jour la position du monstre
+            monsterX += moveX;
+            monsterY += moveY;
 
-        monster.style.left = monsterX + "px";
-        monster.style.top = monsterY + "px";
-
-        requestAnimationFrame(moveMonster);
+            monster.style.left = monsterX + "px";
+            monster.style.top = monsterY + "px";
+        }
+            requestAnimationFrame(moveMonster);
+        
 
         // Vérifiez si le monstre a atteint le joueur
         if (

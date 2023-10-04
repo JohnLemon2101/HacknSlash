@@ -60,17 +60,10 @@ function togglePauseGame() {
     player.dataset.isGamePaused = !JSON.parse(player.dataset.isGamePaused); // Inversez l'état de la pause
     let escapeDialog = document.getElementById("escape");
 
-    console.log(JSON.parse(player.dataset.isGamePaused))
-    if (player.dataset.isGamePaused) {
+    if (JSON.parse(player.dataset.isGamePaused)) {
         escapeDialog.style.display = "block";
-        // Mettez ici votre logique pour mettre en pause le jeu
-        // Par exemple, arrêtez la boucle de jeu ou affichez un écran de pause.
-        // Vous pouvez également désactiver les interactions du joueur.
     } else {
         escapeDialog.style.display = "none";
-        // Mettez ici votre logique pour reprendre le jeu
-        // Réactivez la boucle de jeu et masquez l'écran de pause.
-        // Réactivez les interactions du joueur.
     }
 }
 

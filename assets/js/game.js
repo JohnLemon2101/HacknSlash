@@ -27,7 +27,6 @@ export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
 
-
     player = createPlayer();
 
     createGameOverDialog();

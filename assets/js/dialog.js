@@ -233,63 +233,9 @@ export function createEchapDialog (){
     theme.id = "themeButton"
     theme.textContent = "Thème : " + game.dataset.theme;
     div4.appendChild(theme)
-/*
-    let buttonDamage = document.createElement("button")
-    var imgDamage = document.createElement("img");
-    imgDamage.src = "./assets/images/sword.png";
-    buttonDamage.id = "damageButton"
-    buttonDamage.className = "upgradeButton"
-    buttonDamage.textContent = "+1 dégat"
-    buttonDamage.setAttribute("data-selected", "false");
-    buttonDamage.appendChild(imgDamage)
-    div4.appendChild(buttonDamage)
-
-    let buttonRegen = document.createElement("button")
-    var imgRegen = document.createElement("img");
-    imgRegen.src = "./assets/images/full_heart.png";
-    buttonRegen.id = "regenButton"
-    buttonRegen.className = "upgradeButton"
-    buttonRegen.textContent = "full regen"
-    buttonRegen.setAttribute("data-selected", "false");
-    buttonRegen.appendChild(imgRegen)
-    div4.appendChild(buttonRegen)
-
-    let buttons = [buttonLife, buttonDamage, buttonRegen];
-
-    buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-            buttons.forEach((otherButton) => {
-                if (otherButton !== button) {
-                    otherButton.setAttribute("data-selected", "false");
-                    otherButton.classList.remove("selected");
-                }
-            });
-
-            let isSelected = button.getAttribute("data-selected");
-            if (isSelected === "false") {
-                button.setAttribute("data-selected", "true");
-                button.classList.add("selected");
-            } else {
-                button.setAttribute("data-selected", "false");
-                button.classList.remove("selected");
-            }
-        });
-    });
-*/
 
     customDialog.style.width = "250px"
-    /*
-    let div5 = document.createElement("div")
-    div5.id = "buttonDiv";
-    div5.style.justifyContent = "center";
-    customDialog.appendChild(div5)
 
-
-    let button1 = document.createElement("button")
-    button1.id = "validButton"
-    button1.textContent = "Valider"
-    div5.appendChild(button1)
-*/
     game.appendChild(customDialog);
 
     customDialog.style.display = "none";
@@ -409,15 +355,22 @@ function activeButton(){
             let map = document.getElementById("map")
             let vagues = document.getElementById("vagues")
             let buttons = document.querySelectorAll('button'); 
+            let dialogs = document.getElementsByClassName("dialog")
+            console.log(dialogs);
             //let map = document.getElementById("map")
             if(game.dataset.theme == "light"){
                 map.style.backgroundColor = "black"
                 vagues.style.color = "white"
                 game.dataset.theme = "dark";
 
+                Array.from(dialogs).forEach(dialog => {
+                    dialog.style.backgroundColor = "#666666"
+                    dialog.style.color = "#ffffff"
+                })
+
                 buttons.forEach(button => {
-                    button.style.backgroundColor = "black"
-                    button.style.color = "white"
+                    button.style.backgroundColor = "#444444"
+                    button.style.color = "#ffffff"
                 })
 
 
@@ -425,6 +378,11 @@ function activeButton(){
                 map.style.backgroundColor = "white"
                 vagues.style.color = "black"
                 game.dataset.theme = "light";
+
+                Array.from(dialogs).forEach(dialog => {
+                    dialog.style.backgroundColor = "#ffffff"
+                    dialog.style.color = "black"
+                })
 
                 buttons.forEach(button => {
                     button.style.backgroundColor = "white"

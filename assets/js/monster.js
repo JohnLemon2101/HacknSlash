@@ -5,6 +5,7 @@ var monsterLife;
 var monsterSpeed = 2;
 
 const map = document.getElementById("map");
+var game = document.getElementById("game");
 
 export function createMonster(life) {
     if(life == 0){
@@ -93,7 +94,7 @@ export function createMonster(life) {
             imagePlayer.src = "./assets/images/player_hurt.png";
             
             setTimeout(function () {
-                imagePlayer.src = "./assets/images/player.png";
+                imagePlayer.src = "./assets/images/player_" + game.dataset.theme + ".png";
             }, 500);
             
             monster.remove(); // Supprimez le monstre

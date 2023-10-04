@@ -24,9 +24,8 @@ export function displayUpgrade(vagues) {
 
 export function displayEscape(isGamePaused) {
     let dialog = document.getElementById("escape");
-
+    activeButton();
     if (isGamePaused) {
-        activeButton();
         dialog.style.display = "block";
     } else {
         dialog.style.display = "none";
@@ -215,10 +214,25 @@ export function createEchapDialog (){
     div4.id = "menuDiv";
     customDialog.appendChild(div4)
 
-    let restart = document.createElement("button")
-    restart.id = "restartMenuButton"
-    restart.textContent = "restart"
-    div4.appendChild(restart)
+    let resume = document.createElement("button")
+    resume.id = "resumeButton"
+    resume.textContent = "Resume"
+    div4.appendChild(resume)
+    
+    let audio = document.createElement("button")
+    audio.id = "audioButton"
+    audio.textContent = "Audio"
+    div4.appendChild(audio)
+    
+    let difficulty = document.createElement("button")
+    difficulty.id = "difficultyButton"
+    difficulty.textContent = "Difficulty"
+    div4.appendChild(difficulty)
+
+    let theme = document.createElement("button")
+    theme.id = "themeButton"
+    theme.textContent = "Thème : " + game.dataset.theme;
+    div4.appendChild(theme)
 /*
     let buttonDamage = document.createElement("button")
     var imgDamage = document.createElement("img");
@@ -263,7 +277,7 @@ export function createEchapDialog (){
     });
 */
 
-    //customDialog.style.width = "630px"
+    customDialog.style.width = "250px"
     /*
     let div5 = document.createElement("div")
     div5.id = "buttonDiv";
@@ -286,7 +300,8 @@ function activeButton(){
     let logButton = document.getElementById("logButton")
     let restartButton = document.getElementById("restartButton")
     let validButton = document.getElementById("validButton")
-    let restartMenuButton = document.getElementById("restartMenuButton")
+    let resumeButton = document.getElementById("resumeButton")
+    let themeButton = document.getElementById("themeButton")
 
     if(logButton !== null){
         logButton.addEventListener("click", () => {           
@@ -378,9 +393,47 @@ function activeButton(){
         });
     }
 
-    if(restartMenuButton !== null){
-        restartMenuButton.addEventListener("click", () => {
-            location.reload();
+    if(resumeButton !== null){
+        resumeButton.addEventListener("click", () => {
+            let player = document.getElementById("player");
+            let dialog = document.getElementById("escape");
+
+            player.dataset.isGamePaused = false
+            dialog.style.display = "none";
+            
         });
+    }
+
+    if(themeButton !== null){
+        themeButton.addEventListener("click", () => {
+            let map = document.getElementById("map")
+            let vagues = document.getElementById("vagues")
+            let buttons = document.querySelectorAll('button'); 
+            //let map = document.getElementById("map")
+            if(game.dataset.theme == "light"){
+                map.style.backgroundColor = "black"
+                vagues.style.color = "white"
+                game.dataset.theme = "dark";
+
+                buttons.forEach(button => {
+                    button.style.backgroundColor = "black"
+                    button.style.color = "white"
+                })
+
+
+            } else if(game.dataset.theme == "dark") {
+                map.style.backgroundColor = "white"
+                vagues.style.color = "black"
+                game.dataset.theme = "light";
+
+                buttons.forEach(button => {
+                    button.style.backgroundColor = "white"
+                    button.style.color = "black"
+                })
+            }
+            themeButton.textContent = "Thème : " + game.dataset.theme;
+            document.getElementById("imagePlayer").src = "./assets/images/player_" + game.dataset.theme + ".png";
+        });
+
     }
 }

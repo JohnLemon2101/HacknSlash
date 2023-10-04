@@ -4,7 +4,7 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
 }
-body {
+#game {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,12 +119,39 @@ section {
 
 } */
 
+#jerem {
+    position: absolute;
+    pointer-events: none;
+    top: 50;
+    left: 50%;
+    font-size: 30px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+    
+
 .control {
     margin-top: 20px;
     text-align: center;
 }
 
-a,button {
+#menuDiv button{
+    padding: 10px 30px;
+    margin-top: 10px;
+}
+
+button {
     padding: 10px 50px;
     border-radius: 4px;
     border: 0;
@@ -166,16 +193,6 @@ a,button {
     margin-top: 10px;
 }
 
-/* Style pour les boutons sélectionnés */
-button.selected {
-    background-color: #4CAF50; /* Couleur de fond */
-    color: white; /* Couleur du texte */
-    font-weight: bold; /* Texte en gras */
-    border: 2px solid #4CAF50; /* Bordure solide */
-    border-radius: 4px; /* Coins arrondis */
-}
-
-
 button {
     width: 200px;
 }
@@ -208,3 +225,15 @@ li {
     padding: 1px;
     text-align: left;
 }
+
+
+/* light thème */
+button.selected {
+    background-color: #4CAF50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    font-weight: bold; /* Texte en gras */
+    border: 2px solid #4CAF50; /* Bordure solide */
+    border-radius: 4px; /* Coins arrondis */
+}
+
+/* dark thème */

@@ -1,4 +1,5 @@
 const map = document.getElementById("map");
+var game = document.getElementById("game");
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -19,6 +20,7 @@ var targetY = 0;
 
 export function startShooting(x, y, player) {
     if(!JSON.parse(player.dataset.isGamePaused)) {
+    
         damage = player.dataset.damage;
         let playerHitbox = player.getBoundingClientRect();
 

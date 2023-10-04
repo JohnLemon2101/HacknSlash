@@ -9,26 +9,24 @@ import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDia
 
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les x vagues ?
-
 const numMonstersAtStart = 3;
 var numVague = 1;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
 
-//var hp = document.getElementById("hp");
-
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
 
 var isEnded = 0;
 let isUpdated = false;
-let isGamePaused = false;
 
 const keysPressed = {};
 
 export function initializeGame() {
     // Initialisation du jeu
+    game.dataset.theme = "light"
+
 
     player = createPlayer();
 
@@ -70,7 +68,6 @@ function handleKeyUp(event) {
 function handleMouseClick(event) {
     startShooting(event.clientX, event.clientY, player);
 }
-
 
 function handlePlayerMovement() {
     const playerRect = player.getBoundingClientRect();

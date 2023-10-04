@@ -15,7 +15,6 @@ export function createPlayer() {
     player.dataset.isGamePaused = false;
     player.id = "player";
 
-
     const hp = document.createElement("div");
     hp.id = "hp"
 
@@ -32,11 +31,16 @@ export function createPlayer() {
     
     const imagePlayer = document.createElement("img");
     imagePlayer.id = "imagePlayer"
-    imagePlayer.src = "./assets/images/player.png";
+    imagePlayer.src = "./assets/images/player_" + game.dataset.theme + ".png";
 
     map.appendChild(player);
-
-
+    //TODO pour jerem :)
+    /*
+    const jerem = document.createElement("div");
+    jerem.id = "jerem"
+    jerem.textContent = "Jeremy fait ton merge :)"
+    jerem.style.color = "red"
+    map.appendChild(jerem);*/
     
     const vagues = document.createElement("div");
     vagues.id = "vagues"

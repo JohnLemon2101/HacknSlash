@@ -4,12 +4,11 @@ import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog } from './dialog.js';
+import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
 
 
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les x vagues ?
-//TODO Mettre une menu avec echap ?
 
 const numMonstersAtStart = 3;
 var numVague = 1;
@@ -35,7 +34,9 @@ export function initializeGame() {
 
     createGameOverDialog();
 
-    createUpgradeDialog()
+    createUpgradeDialog();
+
+    createEchapDialog();
 
     spawnMonsters(numVague + numMonstersAtStart);
 
@@ -58,13 +59,7 @@ function handleKeyDown(event) {
 
 function togglePauseGame() {
     player.dataset.isGamePaused = !JSON.parse(player.dataset.isGamePaused); // Inversez l'état de la pause
-    let escapeDialog = document.getElementById("escape");
-
-    if (JSON.parse(player.dataset.isGamePaused)) {
-        escapeDialog.style.display = "block";
-    } else {
-        escapeDialog.style.display = "none";
-    }
+    displayEscape(JSON.parse(player.dataset.isGamePaused));
 }
 
 
@@ -86,10 +81,10 @@ function handlePlayerMovement() {
     var targetX = playerRect.left; // Position cible en X
     var targetY = playerRect.top; // Position cible en Y
 
-    if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 0) { targetY -= speedY; }
-    if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight) { targetY += speedY;  }
-    if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 0) { targetX -= speedX;  }
-    if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth) { targetX += speedX; }
+    if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 10) { targetY -= speedY; }
+    if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += speedY;  }
+    if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= speedX;  }
+    if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += speedX; }
 
     player.style.top = targetY + "px";
     player.style.left = targetX + "px";

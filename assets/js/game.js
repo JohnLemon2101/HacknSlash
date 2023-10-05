@@ -8,7 +8,12 @@ import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDia
 
 
 //TODO bille multi color :)
-//TODO ajout d'un boss tout les x vagues ?
+//TODO ajout d'un boss tout les 10 vagues ?
+//TODO upgrade damage/hp/speed of monster
+//TODO add audio ?
+//TODO add difficulty
+//TODO finish dark theme
+//TODO install phaser ?
 const numMonstersAtStart = 3;
 var numVague = 1;
 let player;
@@ -163,17 +168,10 @@ function endGame() {
 }
 
 function gameLoop() {
-    window.addEventListener("gamepadbuttondown", function(e) {
-        const buttonIndex = e.detail.button; // Indice du bouton enfoncé
-        console.log("Bouton enfoncé : " + buttonIndex);
-        // Vous pouvez exécuter des actions en réponse à l'appui sur un bouton ici
-      });
-      
-      // Gestionnaire d'événements pour le bouton de la manette relâché
-      window.addEventListener("gamepadbuttonup", function(e) {
-        const buttonIndex = e.detail.button; // Indice du bouton relâché
-        console.log("Bouton relâché : " + buttonIndex);
-        // Vous pouvez exécuter des actions en réponse au relâchement d'un bouton ici
+
+    game.addEventListener('mouseleave', () => {
+        player.dataset.isGamePaused = true; // Inversez l'état de la pause
+        displayEscape(JSON.parse(player.dataset.isGamePaused));
       });
     if(!JSON.parse(player.dataset.isGamePaused)) {
         if(isEnded == 0){

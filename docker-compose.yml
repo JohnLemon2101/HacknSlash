@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+    webapp:
+        image: php:8.2-apache
+        build:
+            context: ./
+            dockerfile: dockerfile
+        ports:
+            - 8180:80
+        #network_mode: "host"
+        volumes:
+            - ./:/var/www/html

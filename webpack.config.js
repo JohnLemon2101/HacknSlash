@@ -13,7 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, "."),
   },
   devServer: {
-    port: 8180,
+    port: 8380,
     static: {
       directory: path.resolve(__dirname, '.'), // Dossier de sortie à servir
     },

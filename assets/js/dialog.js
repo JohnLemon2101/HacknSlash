@@ -24,7 +24,6 @@ export function displayUpgrade(vagues) {
 
 export function displayEscape(isGamePaused) {
     let dialog = document.getElementById("escape");
-    activeButton();
     if (isGamePaused) {
         dialog.style.display = "block";
     } else {
@@ -238,6 +237,7 @@ export function createEchapDialog (){
 
     game.appendChild(customDialog);
 
+    activeButton();
     customDialog.style.display = "none";
 }
 
@@ -356,7 +356,7 @@ function activeButton(){
             let vagues = document.getElementById("vagues")
             let buttons = document.querySelectorAll('button'); 
             let dialogs = document.getElementsByClassName("dialog")
-            console.log(dialogs);
+            
             //let map = document.getElementById("map")
             if(game.dataset.theme == "light"){
                 map.style.backgroundColor = "black"

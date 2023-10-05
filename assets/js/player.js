@@ -1,4 +1,3 @@
-import { startShooting } from "./projectile";
 import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
 var map = document.getElementById("map");

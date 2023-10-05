@@ -27,6 +27,19 @@ export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
 
+    
+
+        
+    /*
+    const gamepads = navigator.getGamepads(); // Obtenir la liste des manettes connectées
+
+    console.log(gamepads)
+    for (const gamepad of gamepads) {
+      console.log(gamepad)
+    }*/
+  
+
+
     player = createPlayer();
 
     createGameOverDialog();
@@ -150,6 +163,18 @@ function endGame() {
 }
 
 function gameLoop() {
+    window.addEventListener("gamepadbuttondown", function(e) {
+        const buttonIndex = e.detail.button; // Indice du bouton enfoncé
+        console.log("Bouton enfoncé : " + buttonIndex);
+        // Vous pouvez exécuter des actions en réponse à l'appui sur un bouton ici
+      });
+      
+      // Gestionnaire d'événements pour le bouton de la manette relâché
+      window.addEventListener("gamepadbuttonup", function(e) {
+        const buttonIndex = e.detail.button; // Indice du bouton relâché
+        console.log("Bouton relâché : " + buttonIndex);
+        // Vous pouvez exécuter des actions en réponse au relâchement d'un bouton ici
+      });
     if(!JSON.parse(player.dataset.isGamePaused)) {
         if(isEnded == 0){
             // Mettre à jour la logique du jeu (mouvement, collisions, etc.)

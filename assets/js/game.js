@@ -6,7 +6,6 @@ import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
 
-
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
 //TODO upgrade damage/hp/speed of monster
@@ -14,11 +13,14 @@ import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDia
 //TODO add difficulty
 //TODO finish dark theme
 //TODO install phaser ?
+
+
 const numMonstersAtStart = 3;
 var numVague = 1;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
+let monsterLifeMax = 2;
 
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
@@ -87,21 +89,30 @@ function handleMouseClick(event) {
 }
 
 function handlePlayerMovement() {
-    const playerRect = player.getBoundingClientRect();
+    if(!JSON.parse(player.dataset.isGamePaused)) {
+        console.log("test1")
+        if(isEnded == 0){
+            console.log("test2")
 
-    let playerHeight = playerRect.height;
-    let playerWidth = playerRect.width;
+            const playerRect = player.getBoundingClientRect();
 
-    var targetX = playerRect.left; // Position cible en X
-    var targetY = playerRect.top; // Position cible en Y
+            let playerHeight = playerRect.height;
+            let playerWidth = playerRect.width;
 
-    if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 10) { targetY -= speedY; }
-    if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += speedY;  }
-    if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= speedX;  }
-    if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += speedX; }
+            var targetX = playerRect.left; // Position cible en X
+            var targetY = playerRect.top; // Position cible en Y
 
-    player.style.top = targetY + "px";
-    player.style.left = targetX + "px";
+            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 10) { targetY -= speedY; }
+            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += speedY;  }
+            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= speedX;  }
+            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += speedX; }
+
+            player.style.top = targetY + "px";
+            player.style.left = targetX + "px";
+        }
+    }
+
+    
 }    
 
 function checkHP() {
@@ -144,11 +155,13 @@ function checkMonsterAlive() {
 }
 
 function spawnMonsters(nb) {
-    
+    if(nb % 2 === 0){
+        monsterLifeMax++;
+    }
     let vagues = document.getElementById("vagues");
     vagues.textContent = "Vagues " + (nb - 3);
     for(let i = 0; i < nb; i++){
-        createMonster(Math.floor(Math.random() * 4));
+        createMonster(Math.floor(Math.random() * (monsterLifeMax + 1)));
     }
 }
 
@@ -185,8 +198,13 @@ function gameLoop() {
             checkCollisionWithMonsters();
         
             // Appeler la boucle de jeu à la prochaine frame
+        }else {
+            keysPressed = {};
         }
+    }else {
+        keysPressed = {};
     }
+
     
     requestAnimationFrame(gameLoop);
     

@@ -3,6 +3,8 @@ GAME TEST
 début du projet :
 npm i
 
+npx webpack --config webpack.config.js
+
 lancer le projet :
 npx webpack serve
 

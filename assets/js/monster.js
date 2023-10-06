@@ -7,12 +7,14 @@ var monsterSpeed = 2;
 const map = document.getElementById("map");
 var game = document.getElementById("game");
 
-export function createMonster(life) {
+export function createMonster(life, nbBoss = 1) {
     if(life == 0){
-        monsterLife = 1;
+        monsterLife = 1 * nbBoss;
     }else{
-        monsterLife = life;
+        monsterLife = life * nbBoss;
     }
+    
+    console.log(" clacul 2 " + monsterLife)
     // Créez un élément div pour représenter le monstre
     const monster = document.createElement("div");
     monster.className = "monster"; // Appliquez des styles CSS pour le monstre

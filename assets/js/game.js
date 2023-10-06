@@ -5,7 +5,14 @@ import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
+import { Howl } from 'howler';
 
+let sound = new Howl({
+    src: ['assets/sounds/boss.mp3'],
+    preload: true,
+    volume: 0.1,
+    loop: true,
+  });
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
 //TODO upgrade damage/hp/speed of monster
@@ -14,13 +21,13 @@ import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDia
 //TODO finish dark theme
 //TODO install phaser ?
 
-
-const numMonstersAtStart = 3;
-var numVague = 1;
+let nbBoss = 1;
+let numMonstersAtStart = 3;
+var numVague = 10;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
-let monsterLifeMax = 2;
+let monsterLifeMax = 6;
 
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
@@ -33,9 +40,6 @@ let keysPressed = {};
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
-
-    
-
         
     /*
     const gamepads = navigator.getGamepads(); // Obtenir la liste des manettes connectées
@@ -55,7 +59,7 @@ export function initializeGame() {
 
     createEchapDialog();
 
-    spawnMonsters(numVague + numMonstersAtStart);
+    spawnMonsters();
 
     document.addEventListener("keydown", handleKeyDown);
     
@@ -108,9 +112,9 @@ function handlePlayerMovement() {
             player.style.left = targetX + "px";
         }
     }
-
-    
 }    
+
+
 
 function checkHP() {
     for(let i = 0; i < player.dataset.initialLife; i++){
@@ -139,26 +143,44 @@ function checkMonsterAlive() {
             if(document.getElementById("upgrade").style.display == "none"){
                 isUpdated = false;
                 numVague++;
-                spawnMonsters(numVague + numMonstersAtStart);                
+                console.log("ICICICICICI")
+                sound.stop();
+                spawnMonsters();                
             }
-        } else {
+        } else if((numVague) % 10 === 0){ 
+            spawnMonsters();  
+        }else {
+            
             if(!isUpdated){
                 numVague++;
-                spawnMonsters(numVague + numMonstersAtStart);   
+                spawnMonsters();   
             }         
         }
     }
-    
 }
 
-function spawnMonsters(nb) {
-    if(nb % 2 === 0){
+function spawnMonsters() {
+    numMonstersAtStart++;
+    if(numVague % 2 === 0){
         monsterLifeMax++;
+        console.log(monsterLifeMax)
     }
     let vagues = document.getElementById("vagues");
-    vagues.textContent = "Vagues " + (nb - 3);
-    for(let i = 0; i < nb; i++){
-        createMonster(Math.floor(Math.random() * (monsterLifeMax + 1)));
+    vagues.textContent = "Vagues " + (numVague);
+    if(numVague % 10 === 0){ 
+        sound.play();
+        monsterLifeMax = 6;
+        numMonstersAtStart = 5;
+        nbBoss++;
+        createMonster(numVague);  
+    } else {
+        console.log("boss " + nbBoss)
+        console.log("pv " + monsterLifeMax)
+        for(let i = 0; i < numMonstersAtStart; i++){
+            let lifeMonster = (Math.floor(Math.random() * (monsterLifeMax)));
+            console.log(" clacul 1 " + lifeMonster)
+            createMonster(lifeMonster, nbBoss);
+        }
     }
 }
 

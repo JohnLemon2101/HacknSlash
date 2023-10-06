@@ -184,7 +184,6 @@ function gameLoop() {
         displayEscape(JSON.parse(player.dataset.isGamePaused));
       });
       
-      handlePlayerMovement();
     if(!JSON.parse(player.dataset.isGamePaused)) {
         if(isEnded == 0){
             // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
@@ -193,6 +192,7 @@ function gameLoop() {
             checkHP();
             checkMonsterAlive()
         
+            handlePlayerMovement();
             checkCollisionWithMonsters();
         
             // Appeler la boucle de jeu à la prochaine frame

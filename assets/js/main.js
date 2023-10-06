@@ -2,6 +2,20 @@ import { playerHeight, playerWidth, windowHeight, windowWidth } from './data.js'
 import { initializeGame } from './game.js';
 import Phaser from 'phaser';
 import { createPlayer } from './player.js';
+import { Howl } from 'howler';
+
+new Howl({
+    src: ['assets/sounds/boss.mp3'],
+    preload: true,
+    volume: 0.1,
+    loop: true,
+    autoplay: false //turn true to play music
+  });
+
+document.addEventListener('DOMContentLoaded', function () {
+    
+    initializeGame();
+});
 
 // Fonction de préchargement des ressources
 function preload() {
@@ -46,3 +60,4 @@ const game = new Phaser.Game(config);
 
 // Démarrez le jeu en utilisant une scène (remplacez 'VotreScene' par le nom de votre scène)
 game.scene.start('VotreScene');
+

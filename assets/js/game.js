@@ -29,7 +29,7 @@ map.style.height = windowHeight + "px";
 var isEnded = 0;
 let isUpdated = false;
 
-const keysPressed = {};
+let keysPressed = {};
 
 export function initializeGame() {
     // Initialisation du jeu
@@ -92,7 +92,6 @@ function handleMouseClick(event) {
 function handlePlayerMovement() {
     if(!JSON.parse(player.dataset.isGamePaused)) {
         if(isEnded == 0){
-
             const playerRect = player.getBoundingClientRect();
 
             let playerHeight = playerRect.height;
@@ -185,6 +184,7 @@ function gameLoop() {
         player.dataset.isGamePaused = true; // Inversez l'état de la pause
         displayEscape(JSON.parse(player.dataset.isGamePaused));
       });
+      
     if(!JSON.parse(player.dataset.isGamePaused)) {
         if(isEnded == 0){
             // Mettre à jour la logique du jeu (mouvement, collisions, etc.)
@@ -197,13 +197,8 @@ function gameLoop() {
             checkCollisionWithMonsters();
         
             // Appeler la boucle de jeu à la prochaine frame
-        }else {
-            let keysPressed = {};
-            keysPressed = {};
+
         }
-    }else {
-        let keysPressed = {};
-        keysPressed = {};
     }
 
     

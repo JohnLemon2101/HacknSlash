@@ -1,12 +1,13 @@
 import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
-var map = document.getElementById("map");
+
 var game = document.getElementById("game");
 
 export var life = 4;
 var damage = 2;
 
 export function createPlayer() {
+    var map = document.querySelector("canvas");
     const player = document.createElement("div");
     player.dataset.life = life;
     player.dataset.initialLife = life;
@@ -30,7 +31,7 @@ export function createPlayer() {
     
     const imagePlayer = document.createElement("img");
     imagePlayer.id = "imagePlayer"
-    imagePlayer.src = "./assets/images/player_" + game.dataset.theme + ".png";
+    imagePlayer.src = "./assets/images/player_dark.png"; //+ game.dataset.theme +
 
     map.appendChild(player);
     //TODO pour jerem :)

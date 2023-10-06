@@ -1,4 +1,5 @@
 // game.js
+import Phaser from 'phaser';
 
 import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
 import { createPlayer, } from './player.js';
@@ -90,9 +91,7 @@ function handleMouseClick(event) {
 
 function handlePlayerMovement() {
     if(!JSON.parse(player.dataset.isGamePaused)) {
-        console.log("test1")
         if(isEnded == 0){
-            console.log("test2")
 
             const playerRect = player.getBoundingClientRect();
 
@@ -199,9 +198,11 @@ function gameLoop() {
         
             // Appeler la boucle de jeu à la prochaine frame
         }else {
+            let keysPressed = {};
             keysPressed = {};
         }
     }else {
+        let keysPressed = {};
         keysPressed = {};
     }
 

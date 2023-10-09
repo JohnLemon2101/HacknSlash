@@ -17,13 +17,14 @@ let bossSound = new Howl({
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
 //TODO upgrade damage/hp/speed of monster
-//TODO add audio ?
+//TODO add different type of audio so a onglet for that ?
 //TODO add difficulty
 //TODO finish dark theme
 //TODO install phaser ?
+
 let nbBoss = 1;
 let numMonstersAtStart = 3;
-var numVague = 10;
+var numVague = 1;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");

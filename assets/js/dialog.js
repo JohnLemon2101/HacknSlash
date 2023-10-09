@@ -217,11 +217,25 @@ export function createEchapDialog (){
     resume.id = "resumeButton"
     resume.textContent = "Resume"
     div4.appendChild(resume)
+
+    let audioContainer = document.createElement("div")
+    audioContainer.id = "audioContainer"
+    div4.appendChild(audioContainer)
     
-    let audio = document.createElement("button")
+    let audioLabel = document.createElement("label")
+    audioLabel.for = "audioButton"
+    audioLabel.textContent = "Volume :"
+    audioContainer.appendChild(audioLabel)
+
+    let audio = document.createElement("input")
+    audio.type = "range"
+    audio.min = 0
+    audio.max = 100
+    audio.step = 1
+    audio.value = 50
     audio.id = "audioButton"
     audio.textContent = "Audio"
-    div4.appendChild(audio)
+    audioContainer.appendChild(audio)
     
     let difficulty = document.createElement("button")
     difficulty.id = "difficultyButton"
@@ -356,6 +370,7 @@ function activeButton(){
             let vagues = document.getElementById("vagues")
             let buttons = document.querySelectorAll('button'); 
             let dialogs = document.getElementsByClassName("dialog")
+            let audioButton = document.getElementsByClassName("audioButton")
             
             //let map = document.getElementById("map")
             if(game.dataset.theme == "light"){

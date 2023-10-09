@@ -227,6 +227,13 @@ li {
     text-align: left;
 }
 
+#audioContainer {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
 
 /* light thème */
 button.selected {

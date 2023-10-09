@@ -14,7 +14,6 @@ export function createMonster(life, nbBoss = 1) {
         monsterLife = life * nbBoss;
     }
     
-    console.log(" clacul 2 " + monsterLife)
     // Créez un élément div pour représenter le monstre
     const monster = document.createElement("div");
     monster.className = "monster"; // Appliquez des styles CSS pour le monstre

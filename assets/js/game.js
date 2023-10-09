@@ -7,11 +7,12 @@ import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
 import { Howl } from 'howler';
 
-let sound = new Howl({
+let bossSound = new Howl({
     src: ['assets/sounds/boss.mp3'],
     preload: true,
-    volume: 0.1,
+    volume: 0.5,
     loop: true,
+    id: 'bossSound'
   });
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
@@ -20,13 +21,13 @@ let sound = new Howl({
 //TODO add difficulty
 //TODO finish dark theme
 //TODO install phaser ?
-
 let nbBoss = 1;
 let numMonstersAtStart = 3;
 var numVague = 10;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
+
 let monsterLifeMax = 6;
 
 map.style.width = windowWidth + "px";
@@ -58,6 +59,8 @@ export function initializeGame() {
     createUpgradeDialog();
 
     createEchapDialog();
+
+    const audioButton = document.getElementById("audioButton")
 
     spawnMonsters();
 
@@ -143,8 +146,7 @@ function checkMonsterAlive() {
             if(document.getElementById("upgrade").style.display == "none"){
                 isUpdated = false;
                 numVague++;
-                console.log("ICICICICICI")
-                sound.stop();
+                bossSound.fade(0.1, 0, 2000);
                 spawnMonsters();                
             }
         } else if((numVague) % 10 === 0){ 
@@ -163,22 +165,18 @@ function spawnMonsters() {
     numMonstersAtStart++;
     if(numVague % 2 === 0){
         monsterLifeMax++;
-        console.log(monsterLifeMax)
     }
     let vagues = document.getElementById("vagues");
     vagues.textContent = "Vagues " + (numVague);
     if(numVague % 10 === 0){ 
-        sound.play();
+        bossSound.play();
         monsterLifeMax = 6;
         numMonstersAtStart = 5;
         nbBoss++;
         createMonster(numVague);  
     } else {
-        console.log("boss " + nbBoss)
-        console.log("pv " + monsterLifeMax)
         for(let i = 0; i < numMonstersAtStart; i++){
             let lifeMonster = (Math.floor(Math.random() * (monsterLifeMax)));
-            console.log(" clacul 1 " + lifeMonster)
             createMonster(lifeMonster, nbBoss);
         }
     }
@@ -200,7 +198,6 @@ function endGame() {
 }
 
 function gameLoop() {
-
     game.addEventListener('mouseleave', () => {
         player.dataset.isGamePaused = true; // Inversez l'état de la pause
         displayEscape(JSON.parse(player.dataset.isGamePaused));
@@ -221,6 +218,9 @@ function gameLoop() {
         }
     }
 
+    audioButton.addEventListener("input", () => {
+        bossSound.volume(audioButton.value / 100);
+    })
     
     requestAnimationFrame(gameLoop);
     

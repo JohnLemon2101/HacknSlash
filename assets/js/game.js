@@ -7,13 +7,9 @@ import { checkCollisionWithMonsters, startShooting } from './projectile.js';
 import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
 import { Howl } from 'howler';
 
-let bossSound = new Howl({
-    src: ['assets/sounds/boss.mp3'],
-    preload: true,
-    volume: 0.5,
-    loop: true,
-    id: 'bossSound'
-  });
+let bossSound
+let backgroundSound;
+
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
 //TODO upgrade damage/hp/speed of monster
@@ -24,7 +20,7 @@ let bossSound = new Howl({
 
 let nbBoss = 1;
 let numMonstersAtStart = 3;
-var numVague = 1;
+var numVague = 9;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
@@ -42,16 +38,21 @@ let keysPressed = {};
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
-        
-    /*
-    const gamepads = navigator.getGamepads(); // Obtenir la liste des manettes connectées
+    bossSound = new Howl({
+        src: ['assets/sounds/boss.mp3'],
+        preload: true,
+        volume: 0.5,
+        loop: true,
+    });
 
-    console.log(gamepads)
-    for (const gamepad of gamepads) {
-      console.log(gamepad)
-    }*/
-  
+    backgroundSound = new Howl({
+        src: ['assets/sounds/background.mp3'],
+        preload: true,
+        volume: 0.5,
+        loop: true,
+    });
 
+    backgroundSound.play()
 
     player = createPlayer();
 
@@ -138,26 +139,46 @@ function checkHP() {
 
 function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
-    if (monsters.length === 0 && isEnded == 0) {
-        if((numVague) % 5 === 0){
-            if(!isUpdated){
-                displayUpgrade(numVague);
+    if(isEnded == 0){
+        if (monsters.length === 0) {
+            //console.log(numVague)
+
+            if((numVague) % 10 === 0){ 
+                if(!isUpdated){
+                    console.log("test")
+                    backgroundSound.stop();
+                    
+                    bossSound.play();
+                }
             }
-            isUpdated = true;
+
+            if(numVague % 5 === 0){
+                if(!isUpdated){
+                    console.log(numVague)
+                    displayUpgrade(numVague);
+                    isUpdated = true;
+                }
+            }
+
+            
+
+            if((numVague) % 11 === 0){ 
+                bossSound.fade(bossSound.volume, 0, 2000);
+                setTimeout(function () {
+                    bossSound.stop();
+                    //backgroundSound.play();
+                }, 200);
+            }
+
+
             if(document.getElementById("upgrade").style.display == "none"){
                 isUpdated = false;
-                numVague++;
-                bossSound.fade(0.1, 0, 2000);
                 spawnMonsters();                
             }
-        } else if((numVague) % 10 === 0){ 
-            spawnMonsters();  
-        }else {
-            
+
             if(!isUpdated){
                 numVague++;
-                spawnMonsters();   
-            }         
+            }
         }
     }
 }
@@ -170,7 +191,6 @@ function spawnMonsters() {
     let vagues = document.getElementById("vagues");
     vagues.textContent = "Vagues " + (numVague);
     if(numVague % 10 === 0){ 
-        bossSound.play();
         monsterLifeMax = 6;
         numMonstersAtStart = 5;
         nbBoss++;
@@ -221,6 +241,7 @@ function gameLoop() {
 
     audioButton.addEventListener("input", () => {
         bossSound.volume(audioButton.value / 100);
+        backgroundSound.volume(audioButton.value / 100);
     })
     
     requestAnimationFrame(gameLoop);

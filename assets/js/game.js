@@ -133,7 +133,7 @@ function handlePlayerMovement() {
 //TODO tout les touches
             let dirX = (keysPressed["a"]) - (keysPressed["d"])
             let dirY = (keysPressed["w"]) - (keysPressed["s"])
-//TODO limite fuck dup
+//TODO limite fuck dup (remettre tout les if répare le tout ?)
             //TODO nerf diago pythagore :) diago plus rapide que ligne droite
             if(targetY > 30 && targetY < windowHeight - playerHeight-10) {
                  //targetY -= dirY * parseInt(player.dataset.speedY); 

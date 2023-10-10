@@ -32,23 +32,26 @@ map.style.height = windowHeight + "px";
 
 var isEnded = 0;
 let isUpdated = false;
+let bossTime = false;
 
 let keysPressed = {};
 
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
+    game.dataset.volume = 0.5;
+    
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
         preload: true,
-        volume: 0.5,
+        volume: game.dataset.volume,
         loop: true,
     });
 
     backgroundSound = new Howl({
         src: ['assets/sounds/background.mp3'],
         preload: true,
-        volume: 0.5,
+        volume: game.dataset.volume,
         loop: true,
     });
 
@@ -64,7 +67,11 @@ export function initializeGame() {
 
     const audioButton = document.getElementById("audioButton")
 
-    spawnMonsters();
+    audioButton.addEventListener("input", () => {
+        bossSound.volume(audioButton.value / 100);
+        backgroundSound.volume(audioButton.value / 100);
+        game.dataset.volume = audioButton.value / 100;
+    })
 
     document.addEventListener("keydown", handleKeyDown);
     
@@ -108,7 +115,7 @@ function handlePlayerMovement() {
             var targetX = playerRect.left; // Position cible en X
             var targetY = playerRect.top; // Position cible en Y
 
-            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 10) { targetY -= speedY; }
+            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= speedY; }
             if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += speedY;  }
             if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= speedX;  }
             if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += speedX; }
@@ -141,37 +148,38 @@ function checkMonsterAlive() {
     let monsters = document.querySelectorAll(".monster")
     if(isEnded == 0){
         if (monsters.length === 0) {
-            //console.log(numVague)
+            if(document.getElementById("upgrade").style.display == "none"){
+                let vagues = document.getElementById("vagues");
+                vagues.textContent = "Vagues " + (numVague);              
+            }
 
-            if((numVague) % 10 === 0){ 
+            if(numVague % 10 === 0){ 
                 if(!isUpdated){
                     console.log("test")
                     backgroundSound.stop();
                     
                     bossSound.play();
+                    spawnBoss();
                 }
             }
 
-            if(numVague % 5 === 0){
+            if((numVague - 1) % 5 === 0 && (numVague - 1) != 0){
                 if(!isUpdated){
                     console.log(numVague)
                     displayUpgrade(numVague);
                     isUpdated = true;
                 }
+                if(bossTime){
+                    bossSound.fade(game.dataset.volume, 0, 2000);
+                    setTimeout(function () {
+                        bossSound.stop()
+                        backgroundSound.play();
+                    }, 2000);
+                    bossTime = false;
+                }
             }
 
-            
-
-            if((numVague) % 11 === 0){ 
-                bossSound.fade(bossSound.volume, 0, 2000);
-                setTimeout(function () {
-                    bossSound.stop();
-                    //backgroundSound.play();
-                }, 200);
-            }
-
-
-            if(document.getElementById("upgrade").style.display == "none"){
+            if(document.getElementById("upgrade").style.display == "none" && numVague % 10 !== 0){
                 isUpdated = false;
                 spawnMonsters();                
             }
@@ -188,19 +196,20 @@ function spawnMonsters() {
     if(numVague % 2 === 0){
         monsterLifeMax++;
     }
-    let vagues = document.getElementById("vagues");
-    vagues.textContent = "Vagues " + (numVague);
-    if(numVague % 10 === 0){ 
-        monsterLifeMax = 6;
-        numMonstersAtStart = 5;
-        nbBoss++;
-        createMonster(numVague);  
-    } else {
-        for(let i = 0; i < numMonstersAtStart; i++){
-            let lifeMonster = (Math.floor(Math.random() * (monsterLifeMax)));
-            createMonster(lifeMonster, nbBoss);
-        }
+
+    for(let i = 0; i < numMonstersAtStart; i++){
+        let lifeMonster = (Math.floor(Math.random() * (monsterLifeMax)));
+        createMonster(lifeMonster, nbBoss);
     }
+    
+}
+
+function spawnBoss() {
+    bossTime = true;
+    monsterLifeMax = 6;
+    numMonstersAtStart = 5;
+    nbBoss++;
+    createMonster(numVague);  
 }
 
 function endGame() {
@@ -239,10 +248,7 @@ function gameLoop() {
         }
     }
 
-    audioButton.addEventListener("input", () => {
-        bossSound.volume(audioButton.value / 100);
-        backgroundSound.volume(audioButton.value / 100);
-    })
+    
     
     requestAnimationFrame(gameLoop);
     

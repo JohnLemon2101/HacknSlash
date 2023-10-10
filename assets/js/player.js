@@ -1,16 +1,21 @@
 import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
-var map = document.getElementById("map");
-var game = document.getElementById("game");
+let map = document.getElementById("map");
+let game = document.getElementById("game");
 
-export var life = 4;
-var damage = 2;
+let life = 4;
+let damage = 2;
+let speedY = 5; // Vitesse de déplacement
+let speedX = (speedY * windowWidth) / playerWidth;
 
 export function createPlayer() {
     const player = document.createElement("div");
     player.dataset.life = life;
+    player.dataset.invincible = false;
     player.dataset.initialLife = life;
     player.dataset.damage = damage;
+    player.dataset.speedX = speedX;
+    player.dataset.speedY = speedY;
     player.dataset.isGamePaused = false;
     player.id = "player";
 

@@ -1,6 +1,6 @@
 // game.js
 
-import { windowHeight, windowWidth,  speedX, speedY } from './data.js';
+import { windowHeight, windowWidth } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
@@ -17,8 +17,9 @@ let backgroundSound;
 //TODO add difficulty
 //TODO finish dark theme
 //TODO install phaser ?
+//TODO ajouter un temps d'invincibilité quand on ce fait touché
 
-let nbBoss = 1;
+let nbBoss = 1; //nombre de boss fait
 let numMonstersAtStart = 3;
 var numVague = 9;
 let player;
@@ -39,7 +40,7 @@ let keysPressed = {};
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
-    game.dataset.volume = 0.5;
+    game.dataset.volume = 0;
     
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
@@ -53,9 +54,8 @@ export function initializeGame() {
         preload: true,
         volume: game.dataset.volume,
         loop: true,
+        autoplay: true
     });
-
-    backgroundSound.play()
 
     player = createPlayer();
 
@@ -115,10 +115,13 @@ function handlePlayerMovement() {
             var targetX = playerRect.left; // Position cible en X
             var targetY = playerRect.top; // Position cible en Y
 
-            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= speedY; }
-            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += speedY;  }
-            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= speedX;  }
-            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += speedX; }
+            //TODO bug au nivesu du déplacement vers le bas et la droite
+            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= player.dataset.speedY; }
+            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += player.dataset.speedY;  }
+            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= player.dataset.speedX;  }
+            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += player.dataset.speedX; }
+
+           
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";
@@ -199,7 +202,7 @@ function spawnMonsters() {
 
     for(let i = 0; i < numMonstersAtStart; i++){
         let lifeMonster = (Math.floor(Math.random() * (monsterLifeMax)));
-        createMonster(lifeMonster, nbBoss);
+        createMonster(lifeMonster, 2, 1, nbBoss);
     }
     
 }
@@ -209,7 +212,7 @@ function spawnBoss() {
     monsterLifeMax = 6;
     numMonstersAtStart = 5;
     nbBoss++;
-    createMonster(numVague);  
+    createMonster(numVague, 4, 1);  
 }
 
 function endGame() {

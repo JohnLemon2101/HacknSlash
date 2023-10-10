@@ -4,21 +4,18 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Test</title>
+        <title>Game</title>
+        <link rel="icon" href="assets/images/player_light.png" type="image/x-icon">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
-        <section>
-            <div id="game">
-                <div id="perso">
-                    <img src="./assets/images/img.png" alt="">
-                </div>
-                <div id="obstacles"></div>
-            </div>
+    <body id="game">        
+        <section id="map">
+
         </section>
-        <div class="control">
-            <a href="index.html">START</a>
-        </div>
-        <script src="main.js"></script>
+
+        <div id="gameOver" class="dialog"></div>
+        <div id="upgrade" class="dialog"></div>
+        <div id="escape" class="dialog"></div>
+        <script type="module" src="bundle.js"></script>
     </body>
 </html>

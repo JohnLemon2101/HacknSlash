@@ -1,37 +1,50 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto&display=swap');
 *{
+    user-select: none;
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
 }
-body {
+#game {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
     background-color: #18f;
     flex-direction: column;
+    overflow: hidden;
 }
 section {
     background-color: #fff;
-    padding: 20px;
-    border-radius: 6px;
     box-shadow: 0 0 50px rgba(0,0,0,0.1);
 }
-#game {
-    
-    border: 1px solid #000;
+#map {
     overflow: hidden;
-    border: 0;
-    border-bottom: 1px solid #18f;
+    pointer-events: none;
 }
 
-#perso{
+#vagues {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 50%;
+}
+
+#hp {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+}
+
+.heart {
+    height: 20px;
     width: 20px;
-    height: 50px;
+    user-select: none;
+}
+
+#player{
     position: relative;
-    top: 230px;
-    left: 230px;
     transition: left 0.2s ease-in-out;
 }
 
@@ -56,9 +69,22 @@ section {
     }
 }
 
-#perso img {
+
+#player img {
     object-fit: cover;
+    user-select: none;
 } 
+
+.monster {
+    position: absolute;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
 #obstacles {
     width: 20px;
     height: 20px;
@@ -72,10 +98,11 @@ section {
 }
 
 .projectile {
+    display: "block";
+    position: absolute;
     width: 20px;
     height: 20px;
     background-color: #333;
-    position: relative;
     border-radius: 50%;
 }
 
@@ -93,12 +120,39 @@ section {
 
 } */
 
+#jerem {
+    position: absolute;
+    pointer-events: none;
+    top: 50;
+    left: 50%;
+    font-size: 30px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+    
+
 .control {
     margin-top: 20px;
     text-align: center;
 }
 
-a,button {
+#menuDiv button{
+    padding: 10px 30px;
+    margin-top: 10px;
+}
+
+button {
     padding: 10px 50px;
     border-radius: 4px;
     border: 0;
@@ -110,3 +164,86 @@ a,button {
     text-decoration: 0;
     color: #000;
 }
+
+.dialog {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 420px;
+}
+
+#buttonDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+#upgradeDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button {
+    width: 200px;
+}
+
+.upgradeButton {
+    height: 300px;
+}
+
+.upgradeButton img {
+    height: 70px;
+    width: 70px;
+    user-select: none;
+}
+
+img {
+    user-select: none;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 2px;
+    width: 30%;
+    margin-left: 40%;
+}
+
+li {
+    list-style: none;
+    padding: 1px;
+    text-align: left;
+}
+
+#audioContainer {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* light thème */
+button.selected {
+    background-color: #4CAF50; /* Couleur de fond */
+    color: white; /* Couleur du texte */
+    font-weight: bold; /* Texte en gras */
+    border: 2px solid #4CAF50; /* Bordure solide */
+    border-radius: 4px; /* Coins arrondis */
+}
+
+/* dark thème */

@@ -1,20 +1,11 @@
-# Utilisez une image Node.js comme base
-FROM node:14
+# Use the official PHP 8.2 FPM image as the base image
+FROM php:8.2-apache
 
-# Définissez le répertoire de travail
-WORKDIR /app
 
-# Copiez les fichiers nécessaires dans le conteneur
-COPY package*.json ./
-COPY index.html ./
-COPY main.js ./
-COPY assets/ ./assets/
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y nodejs npm
 
-# Installez les dépendances
-RUN npm install
 
-# Exposez le port sur lequel votre jeu s'exécute
-EXPOSE 3000
 
-# Commande de démarrage de l'application
-CMD [ "npm", "start" ]
+
+

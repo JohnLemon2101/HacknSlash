@@ -1,71 +1,71 @@
-document.addEventListener("DOMContentLoaded", function() {
+import { windowHeight, windowWidth, playerHeight, playerWidth} from './data.js';
 
-    var persoHitbox = document.getElementById("perso");
-    var obstacles = document.getElementById("obstacles");
-    var persoImage = persoHitbox.querySelector("img");
-    var map = document.getElementById("game");
+let map = document.getElementById("map");
+let game = document.getElementById("game");
 
-    var speed = 5; // Vitesse de déplacement
-    const squareSize = 500;
+let life = 4;
+let damage = 2;
+let speedY = 5; // Vitesse de déplacement
+let speedX = (speedY * windowWidth) / playerWidth;
 
-    let positionX = squareSize / 2; // Position initiale de l'image en X
-    let positionY = squareSize / 2; // Position initiale de l'image en Y
-    let targetX = positionX; // Position cible en X
-    let targetY = positionY; // Position cible en Y
+export function createPlayer() {
+    const player = document.createElement("div");
+    player.dataset.life = life;
+    player.dataset.invincible = false;
+    player.dataset.initialLife = life;
+    player.dataset.damage = damage;
+    player.dataset.speedX = speedX;
+    player.dataset.speedY = speedY;
+    player.dataset.isGamePaused = false;
+    player.id = "player";
 
-    let limitMax = 450;
-    let limitMin = 0;
+    const hp = document.createElement("div");
+    hp.id = "hp"
 
-    const keysPressed = {};
+    hp.style.width = 20 * player.dataset.life + "px";
 
-    persoImage.style.width = "20px";
-    persoImage.style.height = "50px";
-
-    persoHitbox.style.top = positionX + "px";
-    persoHitbox.style.left = positionY + "px";
-
-    map.style.width = squareSize + "px";
-    map.style.height = squareSize + "px";
-
-
-
-    function movePlayer() {
-        const stepX = (targetX - positionX);
-        const stepY = (targetY - positionY);
-        positionX += stepX;
-        positionY += stepY;
-
-        console.log(positionX)
-        persoHitbox.style.left = positionX + "px";
-        persoHitbox.style.top = positionY + "px";
-
-        if (Math.abs(targetX - positionX) > 1 || Math.abs(targetY - positionY) > 1) {
-            requestAnimationFrame(movePlayer);
-        }
-    }    
-    
-    document.addEventListener("keydown", function(event) {
-        if(event.key === "w" && targetY>limitMin) { targetY = positionY - speed; }
-        if(event.key === "a" && targetX>limitMin) { targetX = positionX - speed; }
-        if(event.key === "s" && targetY<limitMax) { targetY = positionY + speed; }
-        if(event.key === "d" && targetX<limitMax+25) { targetX = positionX + speed; }
-
-        console.log(targetY)
-        requestAnimationFrame(movePlayer);
-        }
-    )
-
-
-});
-
-
-
-/*
-var verification = setInterval(function(){
-    var persoHitboxTop = parseInt(window.getComputedStyle(persoHitbox).getPropertyValue("top"))
-    var obstaclesLeft = parseInt(window.getComputedStyle(obstacles).getPropertyValue("left"))
-    if(obstaclesLeft<20 && obstaclesLeft>0 && persoHitboxTop>=130){
-        obstacles.style.animation = "none";
-        //alert("Looser")
+    for(let i = 0; i < player.dataset.life; i++){
+        
+        const imageHeart = document.createElement("img");
+        imageHeart.src = "./assets/images/full_heart.png";
+        imageHeart.className = "heart";
+        imageHeart.id = "heart" + i;
+        hp.appendChild(imageHeart);
     }
-},1)*/
+    
+    const imagePlayer = document.createElement("img");
+    imagePlayer.id = "imagePlayer"
+    imagePlayer.src = "./assets/images/player_" + game.dataset.theme + ".png";
+
+    map.appendChild(player);
+    //TODO pour jerem :)
+    /*
+    const jerem = document.createElement("div");
+    jerem.id = "jerem"
+    jerem.textContent = "Jeremy fait ton merge :)"
+    jerem.style.color = "red"
+    map.appendChild(jerem);*/
+    
+    const vagues = document.createElement("div");
+    vagues.id = "vagues"
+    map.appendChild(vagues);
+    map.appendChild(hp);
+    
+
+    // Définir la taille et la position initiale du joueur
+    player.style.width = playerWidth + "px";
+    player.style.height = playerHeight + "px";
+    imagePlayer.style.width = playerWidth + "px";
+    imagePlayer.style.height = playerHeight + "px";
+
+    player.appendChild(imagePlayer);
+
+    // Position initiale du joueur (au centre de la fenêtre)
+
+    const initialX = (windowWidth - playerWidth) / 2;
+    const initialY = (windowHeight - playerHeight) / 2;
+
+    player.style.left = initialX + "px";
+    player.style.top = initialY + "px";
+    return player;
+} 

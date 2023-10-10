@@ -116,19 +116,16 @@ function handlePlayerMovement() {
             var targetY = playerRect.top; // Position cible en Y
 
             //TODO bug au nivesu du déplacement vers le bas et la droite
-            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= player.dataset.speedY; }
-            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += player.dataset.speedY;  }
-            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= player.dataset.speedX;  }
-            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += player.dataset.speedX; }
-
-           
+            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
+            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
+            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
+            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";
         }
     }
-}    
-
+}
 
 
 function checkHP() {

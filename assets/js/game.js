@@ -40,13 +40,23 @@ var isEnded = 0;
 let isUpdated = false;
 let bossTime = false;
 
-let keysPressed = {};
+let keysPressed = {
+    w: false,
+    ArrowUp: false,
+    z: false,
+    a: false,
+    ArrowLeft: false,
+    q: false,
+    s: false,
+    ArrowDown: false,
+    d: false,
+    ArrowRight: false,
+};
 
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
     game.dataset.volume = 0.5;
-    
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
         preload: true,
@@ -89,7 +99,7 @@ export function initializeGame() {
 }
 
 function handleKeyDown(event) {
-    keysPressed[event.key] = true;
+    keysPressed[event.key.toLowerCase()] = true;
     if(event.key === "Escape"){
         togglePauseGame();
     }
@@ -102,7 +112,7 @@ function togglePauseGame() {
 
 
 function handleKeyUp(event) {
-    delete keysPressed[event.key];
+    keysPressed[event.key.toLowerCase()] = false;
 }
 
 function handleMouseClick(event) {
@@ -119,12 +129,22 @@ function handlePlayerMovement() {
 
             var targetX = playerRect.left; // Position cible en X
             var targetY = playerRect.top; // Position cible en Y
+//TODO tout les touches
+            let dirX = (keysPressed["a"]) - (keysPressed["d"])
+            let dirY = (keysPressed["w"]) - (keysPressed["s"])
+//TODO limite fuck dup
+            //TODO nerf diago pythagore :) diago plus rapide que ligne droite
+            if(targetY > 30 && targetY < windowHeight - playerHeight-10) {
+                 //targetY -= dirY * parseInt(player.dataset.speedY); 
+                 targetY -= dirY * parseInt(player.dataset.speedY);
+                }
 
-            //TODO bug au nivesu du déplacement vers le bas et la droite
-            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
-            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
-            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
-            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
+            if(targetX > 10 && targetX < windowWidth - playerWidth-10) { 
+                //targetX -= parseInt(player.dataset.speedX); 
+                targetX -= dirX * parseInt(player.dataset.speedX)
+            }
+
+            //console.log((keysPressed["w"]) - (keysPressed["s"]))
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";

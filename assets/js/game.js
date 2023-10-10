@@ -18,6 +18,7 @@ let backgroundSound;
 //TODO finish dark theme
 //TODO install phaser ?
 //TODO Utiliser mysql pour le score (plus simple ?)
+//TODO ajouter le changement de touche dans le menu
 
 let nbBoss = 1; //nombre de boss fait
 let numMonstersAtStart = 3;

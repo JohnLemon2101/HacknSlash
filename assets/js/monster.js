@@ -95,12 +95,17 @@ export function createMonster(life, monsterSpeed, damage, nbBoss = 1) {
                 
                 imagePlayer.src = "./assets/images/player_hurt.png";
                 player.dataset.invincible = true;
-                let actualSpeedPlayer = player.dataset.speed;
-                player.dataset.speed = player.dataset.speed * 2
+
+                let actualSpeedPlayerY = parseInt(player.dataset.speedY);
+                let actualSpeedPlayerX = parseInt(player.dataset.speedX);
+
+                player.dataset.speedY = actualSpeedPlayerY * 2
+                player.dataset.speedX = actualSpeedPlayerX * 2
                 setTimeout(() => {
                     imagePlayer.src = "./assets/images/player_" + game.dataset.theme + ".png";
                     player.dataset.invincible = false;
-                    player.dataset.speed = actualSpeedPlayer;
+                    player.dataset.speedY = actualSpeedPlayerY
+                    player.dataset.speedX = actualSpeedPlayerX
                 }, 2000);
             }
            

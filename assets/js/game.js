@@ -17,11 +17,11 @@ let backgroundSound;
 //TODO add difficulty
 //TODO finish dark theme
 //TODO install phaser ?
-//TODO ajouter un temps d'invincibilité quand on ce fait touché
+//TODO Utiliser mysql pour le score (plus simple ?)
 
 let nbBoss = 1; //nombre de boss fait
 let numMonstersAtStart = 3;
-var numVague = 9;
+var numVague = 1;
 let player;
 var map = document.getElementById("map");
 var game = document.getElementById("game");
@@ -30,6 +30,11 @@ let monsterLifeMax = 6;
 
 map.style.width = windowWidth + "px";
 map.style.height = windowHeight + "px";
+
+game.style.minHeight = windowHeight + "px";
+game.style.minWidth = windowWidth + "px";
+game.style.maxHeight = windowHeight + "px";
+game.style.maxWidth = windowWidth + "px";
 
 var isEnded = 0;
 let isUpdated = false;
@@ -40,7 +45,7 @@ let keysPressed = {};
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
-    game.dataset.volume = 0;
+    game.dataset.volume = 0.5;
     
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],

@@ -123,8 +123,11 @@ function handlePlayerMovement() {
             var targetX = playerRect.left; // Position cible en X
             var targetY = playerRect.top; // Position cible en Y
 //TODO tout les touches
-            let dirX = (keysPressed["a"]) - (keysPressed["d"])
-            let dirY = (keysPressed["w"]) - (keysPressed["s"])
+           // let dirX = (keysPressed["a"]) - (keysPressed["d"])
+            //let dirY = (keysPressed["w"]) - (keysPressed["s"])
+
+
+
 //TODO limite fuck dup (remettre tout les if répare le tout ?)
             //TODO nerf diago pythagore :) diago plus rapide que ligne droite
             /*if(targetY > 30 && targetY < windowHeight - playerHeight-10) {
@@ -138,32 +141,11 @@ function handlePlayerMovement() {
             }
 */
 
-                // Coordonnées du centre du cercle
-            const x0 = targetX; // Remplacez par la coordonnée x du centre du cercle
-            const y0 = targetY; // Remplacez par la coordonnée y du centre du cercle
 
-
-
-
-
-
-            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
-            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
-            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
-            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
-
-            
-            // Coordonnées du point que vous souhaitez vérifier
-            const x = targetX; // Remplacez par la coordonnée x du point
-            const y = targetY; // Remplacez par la coordonnée y du point
-
-                        // Rayon du cercle
-            const rayonCercle = 5;
-
-            // Calcul de la distance
-            const distance = Math.sqrt(Math.pow(x - x0, 2) + Math.pow(y - y0, 2));
-
-            console.log(distance)
+            if((keysPressed["w"] || keysPressed["z"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
+            if((keysPressed["s"] || keysPressed["ArrowUp"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
+            if((keysPressed["a"] || keysPressed["q"] || keysPressed["ArrowUp"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
+            if((keysPressed["d"] || keysPressed["ArrowUp"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";

@@ -4,12 +4,14 @@ import { windowHeight, windowWidth } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './dialog.js';
+import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './menu.js';
 import { Howl } from 'howler';
 
 let bossSound
 let backgroundSound;
 
+
+//TODO faire une connection pour garder un pseudo et des touches enregistrer ?
 //TODO bille multi color :)
 //TODO ajout d'un boss tout les 10 vagues ?
 //TODO upgrade damage/hp/speed of monster
@@ -41,23 +43,14 @@ var isEnded = 0;
 let isUpdated = false;
 let bossTime = false;
 
-let keysPressed = {
-    w: false,
-    ArrowUp: false,
-    z: false,
-    a: false,
-    ArrowLeft: false,
-    q: false,
-    s: false,
-    ArrowDown: false,
-    d: false,
-    ArrowRight: false,
-};
+let keysPressed = {};
 
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
     game.dataset.volume = 0.5;
+    console.log(window.innerWidth)
+    console.log(window.innerHeight)
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
         preload: true,
@@ -135,7 +128,7 @@ function handlePlayerMovement() {
             let dirY = (keysPressed["w"]) - (keysPressed["s"])
 //TODO limite fuck dup (remettre tout les if répare le tout ?)
             //TODO nerf diago pythagore :) diago plus rapide que ligne droite
-            if(targetY > 30 && targetY < windowHeight - playerHeight-10) {
+            /*if(targetY > 30 && targetY < windowHeight - playerHeight-10) {
                  //targetY -= dirY * parseInt(player.dataset.speedY); 
                  targetY -= dirY * parseInt(player.dataset.speedY);
                 }
@@ -144,8 +137,11 @@ function handlePlayerMovement() {
                 //targetX -= parseInt(player.dataset.speedX); 
                 targetX -= dirX * parseInt(player.dataset.speedX)
             }
-
-            //console.log((keysPressed["w"]) - (keysPressed["s"]))
+*/
+            if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
+            if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
+            if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
+            if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";
@@ -181,7 +177,6 @@ function checkMonsterAlive() {
 
             if(numVague % 10 === 0){ 
                 if(!isUpdated){
-                    console.log("test")
                     backgroundSound.stop();
                     
                     bossSound.play();
@@ -191,7 +186,6 @@ function checkMonsterAlive() {
 
             if((numVague - 1) % 5 === 0 && (numVague - 1) != 0){
                 if(!isUpdated){
-                    console.log(numVague)
                     displayUpgrade(numVague);
                     isUpdated = true;
                 }

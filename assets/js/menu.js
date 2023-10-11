@@ -1,4 +1,4 @@
-import { filepath, apiURL } from './data.js';
+import { filepath, apiURL, windowHeight } from './data.js';
 import axios from 'axios';
 
 var customDialog;
@@ -24,10 +24,13 @@ export function displayUpgrade(vagues) {
 
 export function displayEscape(isGamePaused) {
     let dialog = document.getElementById("escape");
+    let resumeDiv = document.getElementById("resumeDiv");
     if (isGamePaused) {
         dialog.style.display = "block";
+        resumeDiv.style.display = "block";
     } else {
         dialog.style.display = "none";
+        resumeDiv.style.display = "none";
     }
 }
 
@@ -213,10 +216,10 @@ export function createEchapDialog (){
     div4.id = "menuDiv";
     customDialog.appendChild(div4)
 
-    let resume = document.createElement("button")
-    resume.id = "resumeButton"
-    resume.textContent = "Resume"
-    div4.appendChild(resume)
+    let controle = document.createElement("button")
+    controle.id = "controleButton"
+    controle.textContent = "Contrôle"
+    div4.appendChild(controle)
 
     let audioContainer = document.createElement("div")
     audioContainer.id = "audioContainer"
@@ -239,7 +242,7 @@ export function createEchapDialog (){
     
     let difficulty = document.createElement("button")
     difficulty.id = "difficultyButton"
-    difficulty.textContent = "Difficulty"
+    difficulty.textContent = "Difficulté"
     div4.appendChild(difficulty)
 
     let theme = document.createElement("button")
@@ -251,10 +254,206 @@ export function createEchapDialog (){
 
     game.appendChild(customDialog);
 
+    let resumeDiv = document.createElement("div")
+    resumeDiv.id = "resumeDiv"
+    resumeDiv.style.display = "none";
+    game.appendChild(resumeDiv)
+
+
+
+    let resume = document.createElement("p")
+    resume.id = "resumeButton"
+    resume.textContent = "Esc"
+    resume.style.position = "absolute";
+    resume.style.left = "10px";
+    resume.style.top = (windowHeight - 50) + "px";
+    //resume.style.width = "126px";
+    resumeDiv.appendChild(resume)
+
+    let resumeText = document.createElement("p")
+    resumeText.textContent = "Quitter le menu"
+    resumeText.style.position = "absolute";
+    resumeText.style.left = "150px";
+    resumeText.style.top = (windowHeight - 40) + "px";
+    resumeDiv.appendChild(resumeText)
+
     activeButton();
     customDialog.style.display = "none";
 }
 
+export function createOptionsDialog (){
+    customDialog = document.getElementById("options");
+    let div1 = document.createElement("div")
+    let titleElement = document.createElement("h1");
+    let textElement = document.createElement("p");
+
+    titleElement.textContent = "Upgrade";
+    textElement.textContent = "Veuillez choisir votre améloration";
+
+    customDialog.appendChild(div1)
+
+    div1.appendChild(titleElement)
+    div1.appendChild(textElement)
+    
+    let div4 = document.createElement("div")
+    div4.id = "upgradeDiv";
+    customDialog.appendChild(div4)
+
+    let buttonLife = document.createElement("button")
+    var imgLife = document.createElement("img");
+    imgLife.src = "./assets/images/full_heart.png";
+    buttonLife.id = "lifeButton"
+    buttonLife.className = "upgradeButton"
+    buttonLife.textContent = "+1 vie"
+    buttonLife.setAttribute("data-selected", "false");
+    buttonLife.appendChild(imgLife)
+    div4.appendChild(buttonLife)  
+
+    let buttonDamage = document.createElement("button")
+    var imgDamage = document.createElement("img");
+    imgDamage.src = "./assets/images/sword.png";
+    buttonDamage.id = "damageButton"
+    buttonDamage.className = "upgradeButton"
+    buttonDamage.textContent = "+1 dégat"
+    buttonDamage.setAttribute("data-selected", "false");
+    buttonDamage.appendChild(imgDamage)
+    div4.appendChild(buttonDamage)
+
+    let buttonRegen = document.createElement("button")
+    var imgRegen = document.createElement("img");
+    imgRegen.src = "./assets/images/full_heart.png";
+    buttonRegen.id = "regenButton"
+    buttonRegen.className = "upgradeButton"
+    buttonRegen.textContent = "full regen"
+    buttonRegen.setAttribute("data-selected", "false");
+    buttonRegen.appendChild(imgRegen)
+    div4.appendChild(buttonRegen)
+
+    let buttons = [buttonLife, buttonDamage, buttonRegen];
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+            buttons.forEach((otherButton) => {
+                if (otherButton !== button) {
+                    otherButton.setAttribute("data-selected", "false");
+                    otherButton.classList.remove("selected");
+                }
+            });
+
+            let isSelected = button.getAttribute("data-selected");
+            if (isSelected === "false") {
+                button.setAttribute("data-selected", "true");
+                button.classList.add("selected");
+            } else {
+                button.setAttribute("data-selected", "false");
+                button.classList.remove("selected");
+            }
+        });
+    });
+
+
+    customDialog.style.width = "630px"
+    
+    let div5 = document.createElement("div")
+    div5.id = "buttonDiv";
+    div5.style.justifyContent = "center";
+    customDialog.appendChild(div5)
+
+
+    let button1 = document.createElement("button")
+    button1.id = "validButton"
+    button1.textContent = "Valider"
+    div5.appendChild(button1)
+
+    game.appendChild(customDialog);
+
+    customDialog.style.display = "none";
+}
+
+
+export function createStartDialog (){
+    customDialog = document.getElementById("start");
+    let div1 = document.createElement("div")
+    let titleElement = document.createElement("h1");
+
+    titleElement.textContent = "Menu";
+
+    customDialog.appendChild(div1)
+    div1.appendChild(titleElement)
+    
+
+    let div4 = document.createElement("div")
+    div4.id = "menuDiv";
+    customDialog.appendChild(div4)
+
+    let controle = document.createElement("button")
+    controle.id = "controleButton"
+    controle.textContent = "Contrôle"
+    div4.appendChild(controle)
+
+    let audioContainer = document.createElement("div")
+    audioContainer.id = "audioContainer"
+    div4.appendChild(audioContainer)
+    
+    let audioLabel = document.createElement("label")
+    audioLabel.for = "audioButton"
+    audioLabel.textContent = "Volume :"
+    audioContainer.appendChild(audioLabel)
+
+    let audio = document.createElement("input")
+    audio.type = "range"
+    audio.min = 0
+    audio.max = 100
+    audio.step = 1
+    audio.value = 50
+    audio.id = "audioButton"
+    audio.textContent = "Audio"
+    audioContainer.appendChild(audio)
+    
+    let difficulty = document.createElement("button")
+    difficulty.id = "difficultyButton"
+    difficulty.textContent = "Difficulté"
+    div4.appendChild(difficulty)
+
+    let theme = document.createElement("button")
+    theme.id = "themeButton"
+    theme.textContent = "Thème : " + game.dataset.theme;
+    div4.appendChild(theme)
+
+    customDialog.style.width = "250px"
+
+    game.appendChild(customDialog);
+
+    let resumeDiv = document.createElement("div")
+    resumeDiv.id = "resumeDiv"
+    resumeDiv.style.display = "none";
+    game.appendChild(resumeDiv)
+
+
+
+    let resume = document.createElement("p")
+    resume.id = "resumeButton"
+    resume.textContent = "Esc"
+    resume.style.position = "absolute";
+    resume.style.left = "10px";
+    resume.style.top = (windowHeight - 50) + "px";
+    //resume.style.width = "126px";
+    resumeDiv.appendChild(resume)
+
+    let resumeText = document.createElement("p")
+    resumeText.textContent = "Quitter le menu"
+    resumeText.style.position = "absolute";
+    resumeText.style.left = "150px";
+    resumeText.style.top = (windowHeight - 40) + "px";
+    resumeDiv.appendChild(resumeText)
+
+    activeButton();
+    customDialog.style.display = "none";
+}
+
+
+//TODO un menu option
+//un menu de démarrage
 
 function activeButton(){
     let logButton = document.getElementById("logButton")

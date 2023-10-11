@@ -87,7 +87,6 @@ export function createMonster(life, monsterSpeed, damage, nbBoss = 1) {
             playerRect.right > monsterRect.left &&
             playerRect.bottom > monsterRect.top 
         ) {
-            console.log(player.dataset.invincible)
             if(!JSON.parse(player.dataset.invincible)){
                 // Le monstre a atteint le joueur, vous pouvez ajouter votre logique de jeu ici (par exemple, réduire la santé du joueur)
                 player.dataset.life = player.dataset.life - monster.dataset.damage

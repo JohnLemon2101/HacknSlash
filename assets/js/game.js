@@ -49,8 +49,6 @@ export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
     game.dataset.volume = 0.5;
-    console.log(window.innerWidth)
-    console.log(window.innerHeight)
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
         preload: true,
@@ -67,6 +65,7 @@ export function initializeGame() {
     });
 
     player = createPlayer();
+
 
     createGameOverDialog();
 
@@ -138,10 +137,33 @@ function handlePlayerMovement() {
                 targetX -= dirX * parseInt(player.dataset.speedX)
             }
 */
+
+                // Coordonnées du centre du cercle
+            const x0 = targetX; // Remplacez par la coordonnée x du centre du cercle
+            const y0 = targetY; // Remplacez par la coordonnée y du centre du cercle
+
+
+
+
+
+
             if((keysPressed["w"] || keysPressed["W"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
             if((keysPressed["s"] || keysPressed["S"] || keysPressed["ArrowDown"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
             if((keysPressed["a"] || keysPressed["A"] || keysPressed["ArrowLeft"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
             if((keysPressed["d"] || keysPressed["D"] || keysPressed["ArrowRight"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
+
+            
+            // Coordonnées du point que vous souhaitez vérifier
+            const x = targetX; // Remplacez par la coordonnée x du point
+            const y = targetY; // Remplacez par la coordonnée y du point
+
+                        // Rayon du cercle
+            const rayonCercle = 5;
+
+            // Calcul de la distance
+            const distance = Math.sqrt(Math.pow(x - x0, 2) + Math.pow(y - y0, 2));
+
+            console.log(distance)
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";

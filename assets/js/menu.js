@@ -25,12 +25,15 @@ export function displayUpgrade(vagues) {
 export function displayEscape(isGamePaused) {
     let dialog = document.getElementById("escape");
     let resumeDiv = document.getElementById("resumeDiv");
+    let customDialog = document.getElementById("options");
+
     if (isGamePaused) {
         dialog.style.display = "block";
         resumeDiv.style.display = "block";
     } else {
         dialog.style.display = "none";
         resumeDiv.style.display = "none";
+        customDialog.style.display = "none";
     }
 }
 
@@ -61,13 +64,13 @@ export function createGameOverDialog (){
     
     div2.appendChild(input)
     
-
+/*
     const params = new URLSearchParams({ filePath: filepath });
     const urlAvecParametres = `${apiURL}?${params}`;
-
+*/
     let div3 = document.createElement("div")
     customDialog.appendChild(div3)
-
+/*
     const ul = document.createElement("ul");
 
     axios.get(urlAvecParametres)
@@ -91,7 +94,7 @@ export function createGameOverDialog (){
     });
 
     div3.appendChild(ul)
-    
+    */
     let div4 = document.createElement("div")
     div4.id = "buttonDiv";
     customDialog.appendChild(div4)
@@ -216,6 +219,11 @@ export function createEchapDialog (){
     div4.id = "menuDiv";
     customDialog.appendChild(div4)
 
+    let options = document.createElement("button")
+    options.id = "optionButton"
+    options.textContent = "Options"
+    div4.appendChild(options)
+
     let controle = document.createElement("button")
     controle.id = "controleButton"
     controle.textContent = "Contrôle"
@@ -266,6 +274,7 @@ export function createEchapDialog (){
     resume.textContent = "Esc"
     resume.style.position = "absolute";
     resume.style.left = "10px";
+    resume.style.pointerEvents = "none";
     resume.style.top = (windowHeight - 50) + "px";
     //resume.style.width = "126px";
     resumeDiv.appendChild(resume)
@@ -284,76 +293,76 @@ export function createEchapDialog (){
 export function createOptionsDialog (){
     customDialog = document.getElementById("options");
     let div1 = document.createElement("div")
-    let titleElement = document.createElement("h1");
-    let textElement = document.createElement("p");
-
-    titleElement.textContent = "Upgrade";
-    textElement.textContent = "Veuillez choisir votre améloration";
-
+    div1.id = "tabDiv"
     customDialog.appendChild(div1)
 
-    div1.appendChild(titleElement)
-    div1.appendChild(textElement)
+
+    let tabs = document.createElement("ul");
+    tabs.classList.add = "tabs";
+
+    div1.appendChild(tabs)
     
-    let div4 = document.createElement("div")
-    div4.id = "upgradeDiv";
-    customDialog.appendChild(div4)
+    let tabGeneral = document.createElement("li");
+    tabGeneral.classList.add("tab-button")
+    tabGeneral.classList.add("active")
+    tabGeneral.dataset.tab = "general"
+    tabGeneral.textContent = "Général"
 
-    let buttonLife = document.createElement("button")
-    var imgLife = document.createElement("img");
-    imgLife.src = "./assets/images/full_heart.png";
-    buttonLife.id = "lifeButton"
-    buttonLife.className = "upgradeButton"
-    buttonLife.textContent = "+1 vie"
-    buttonLife.setAttribute("data-selected", "false");
-    buttonLife.appendChild(imgLife)
-    div4.appendChild(buttonLife)  
+    let tabAudio = document.createElement("li");
+    tabAudio.classList.add("tab-button")
+    tabAudio.dataset.tab = "audio"
+    tabAudio.textContent = "Audio"
 
-    let buttonDamage = document.createElement("button")
-    var imgDamage = document.createElement("img");
-    imgDamage.src = "./assets/images/sword.png";
-    buttonDamage.id = "damageButton"
-    buttonDamage.className = "upgradeButton"
-    buttonDamage.textContent = "+1 dégat"
-    buttonDamage.setAttribute("data-selected", "false");
-    buttonDamage.appendChild(imgDamage)
-    div4.appendChild(buttonDamage)
+    let tabControl = document.createElement("li");
+    tabControl.classList.add("tab-button")
+    tabControl.dataset.tab = "control"
+    tabControl.textContent = "Contrôle"
 
-    let buttonRegen = document.createElement("button")
-    var imgRegen = document.createElement("img");
-    imgRegen.src = "./assets/images/full_heart.png";
-    buttonRegen.id = "regenButton"
-    buttonRegen.className = "upgradeButton"
-    buttonRegen.textContent = "full regen"
-    buttonRegen.setAttribute("data-selected", "false");
-    buttonRegen.appendChild(imgRegen)
-    div4.appendChild(buttonRegen)
+    tabs.appendChild(tabGeneral)
+    tabs.appendChild(tabAudio)
+    tabs.appendChild(tabControl)
 
-    let buttons = [buttonLife, buttonDamage, buttonRegen];
+    let divGeneral = document.createElement("div")
+    divGeneral.textContent = "divGeneral"
+    divGeneral.id = "general"
+    divGeneral.classList.add("tab-content")
+    divGeneral.classList.add("active")
 
-    buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-            buttons.forEach((otherButton) => {
-                if (otherButton !== button) {
-                    otherButton.setAttribute("data-selected", "false");
-                    otherButton.classList.remove("selected");
+    let divAudio = document.createElement("div")
+    divAudio.textContent = "divAudio"
+    divAudio.id = "audio"
+    divAudio.classList.add("tab-content")
+
+    let divControl = document.createElement("div")
+    divControl.textContent = "divControl"
+    divControl.id = "control"
+    divControl.classList.add("tab-content")
+    
+    div1.appendChild(divGeneral)
+    div1.appendChild(divAudio)
+    div1.appendChild(divControl)
+
+    let tabArray = [tabAudio, tabControl, tabGeneral];
+
+    tabArray.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            tab.classList.add("active");
+
+            let tabContent = document.getElementById(tab.dataset.tab)
+            tabContent.classList.add("active");
+
+            tabArray.forEach((otherTab) => {
+                if (otherTab !== tab) {
+                    let otherTabContent = document.getElementById(otherTab.dataset.tab)
+                    otherTab.classList.remove("active");
+                    otherTabContent.classList.remove("active");
                 }
             });
-
-            let isSelected = button.getAttribute("data-selected");
-            if (isSelected === "false") {
-                button.setAttribute("data-selected", "true");
-                button.classList.add("selected");
-            } else {
-                button.setAttribute("data-selected", "false");
-                button.classList.remove("selected");
-            }
         });
     });
 
-
     customDialog.style.width = "630px"
-    
+    /*
     let div5 = document.createElement("div")
     div5.id = "buttonDiv";
     div5.style.justifyContent = "center";
@@ -364,9 +373,9 @@ export function createOptionsDialog (){
     button1.id = "validButton"
     button1.textContent = "Valider"
     div5.appendChild(button1)
-
+*/
     game.appendChild(customDialog);
-
+    activeButton();
     customDialog.style.display = "none";
 }
 
@@ -461,7 +470,9 @@ function activeButton(){
     let validButton = document.getElementById("validButton")
     let resumeButton = document.getElementById("resumeButton")
     let themeButton = document.getElementById("themeButton")
-
+    let optionButton = document.getElementById("optionButton")
+    //let tabGeneral = document.querySelectorAll('.tab-button');
+//console.log(tabGeneral)
     if(logButton !== null){
         logButton.addEventListener("click", () => {           
             const playerName = document.getElementById("playerName");
@@ -552,7 +563,7 @@ function activeButton(){
         });
     }
 
-    if(resumeButton !== null){
+    /*if(resumeButton !== null){
         resumeButton.addEventListener("click", () => {
             let player = document.getElementById("player");
             let dialog = document.getElementById("escape");
@@ -560,6 +571,14 @@ function activeButton(){
             player.dataset.isGamePaused = false
             dialog.style.display = "none";
             
+        });
+    }*/
+    
+    
+    if(optionButton !== null){
+        optionButton.addEventListener("click", () => {
+            let customDialog = document.getElementById("options");
+            customDialog.style.display = "block";
         });
     }
 
@@ -608,4 +627,6 @@ function activeButton(){
         });
 
     }
+
+
 }

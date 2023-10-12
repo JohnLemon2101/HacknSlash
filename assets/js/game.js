@@ -4,7 +4,7 @@ import { windowHeight, windowWidth } from './data.js';
 import { createPlayer, } from './player.js';
 import { createMonster } from './monster.js';
 import { checkCollisionWithMonsters, startShooting } from './projectile.js';
-import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, displayEscape } from './menu.js';
+import { displayGameOver, displayUpgrade, createUpgradeDialog, createGameOverDialog, createEchapDialog, createOptionsDialog, displayEscape } from './menu.js';
 import { Howl } from 'howler';
 
 let bossSound
@@ -45,10 +45,20 @@ let bossTime = false;
 
 let keysPressed = {};
 
+let movingUp = false;
+let movingLeft = false;
+let movingDown = false;
+let movingRight = false;
+
+
 export function initializeGame() {
     // Initialisation du jeu
     game.dataset.theme = "light"
     game.dataset.volume = 0.5;
+    game.dataset.keyUp = "w";
+    game.dataset.keyDown = "s";
+    game.dataset.keyRight = "d";
+    game.dataset.keyLeft = "a";
     bossSound = new Howl({
         src: ['assets/sounds/boss.mp3'],
         preload: true,
@@ -73,6 +83,8 @@ export function initializeGame() {
 
     createEchapDialog();
 
+    createOptionsDialog();
+
     const audioButton = document.getElementById("audioButton")
 
     audioButton.addEventListener("input", () => {
@@ -92,20 +104,56 @@ export function initializeGame() {
 }
 
 function handleKeyDown(event) {
-    keysPressed[event.key.toLowerCase()] = true;
-    if(event.key === "Escape"){
-        togglePauseGame();
+    //keysPressed[event.key.toLowerCase()] = true;
+    switch (event.key.toLowerCase()) {
+        case game.dataset.keyUp:
+        case "arrowup":
+            movingUp = true;
+            break;
+        case game.dataset.keyLeft:
+        case "arrowleft":
+            movingLeft = true;
+            break;
+        case game.dataset.keyDown:
+        case "arrowdown":
+            movingDown = true;
+            break;
+        case game.dataset.keyRight:
+        case "arrowright":
+            movingRight = true;
+            break;
+        case "escape":
+            togglePauseGame();
+            break;
+    }
+}
+
+function handleKeyUp(event) {
+    //keysPressed[event.key.toLowerCase()] = false;
+    
+    switch (event.key.toLowerCase()) {
+        case "w":
+        case "arrowup":
+            movingUp = false;
+            break;
+        case "a":
+        case "arrowleft":
+            movingLeft = false;
+            break;
+        case "s":
+        case "arrowdown":
+            movingDown = false;
+            break;
+        case "d":
+        case "arrowright":
+            movingRight = false;
+            break;
     }
 }
 
 function togglePauseGame() {
     player.dataset.isGamePaused = !JSON.parse(player.dataset.isGamePaused); // Inversez l'état de la pause
     displayEscape(JSON.parse(player.dataset.isGamePaused));
-}
-
-
-function handleKeyUp(event) {
-    keysPressed[event.key.toLowerCase()] = false;
 }
 
 function handleMouseClick(event) {
@@ -142,10 +190,10 @@ function handlePlayerMovement() {
 */
 
 
-            if((keysPressed["w"] || keysPressed["z"] || keysPressed["ArrowUp"]) && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
-            if((keysPressed["s"] || keysPressed["ArrowUp"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
-            if((keysPressed["a"] || keysPressed["q"] || keysPressed["ArrowUp"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
-            if((keysPressed["d"] || keysPressed["ArrowUp"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
+            if(movingUp && targetY > 30) { targetY -= parseInt(player.dataset.speedY); }
+            if(movingDown && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
+            if(movingLeft && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
+            if(movingRight && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
 
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";

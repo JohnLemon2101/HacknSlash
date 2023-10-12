@@ -224,7 +224,7 @@ button {
 img {
     user-select: none;
 }
-
+/*
 ul {
     display: flex;
     flex-direction: column;
@@ -234,12 +234,7 @@ ul {
     margin-left: 40%;
 }
 
-li {
-    list-style: none;
-    padding: 1px;
-    text-align: left;
-}
-
+*/
 #audioContainer {
     display: flex;
     flex-direction: column;
@@ -259,4 +254,43 @@ button.selected {
     border-radius: 4px; /* Coins arrondis */
 }
 
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+li {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #ccc;
+    user-select: none;
+    list-style: none;
+    border-left: 1px solid grey
+}
+
+li.active {
+    background-color: #f0f0f0;
+    border-left: 0px solid black
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    background-color: #f0f0f0;
+}
+
+.tab-content {
+    display: none;
+}
+
+.close-button {
+    display: block;
+    margin-top: 10px;
+}
 /* dark thème */

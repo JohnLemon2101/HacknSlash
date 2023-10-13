@@ -146,7 +146,18 @@ function handlePlayerMovement() {
             if((keysPressed["s"] || keysPressed["ArrowUp"]) && targetY < windowHeight - playerHeight-10) { targetY += parseInt(player.dataset.speedY);  }
             if((keysPressed["a"] || keysPressed["q"] || keysPressed["ArrowUp"]) && targetX > 10) { targetX -= parseInt(player.dataset.speedX);  }
             if((keysPressed["d"] || keysPressed["ArrowUp"]) && targetX < windowWidth - playerWidth-10) { targetX += parseInt(player.dataset.speedX); }
+            if(keysPressed["w"] && keysPressed["d"] ){
+                console.log("asasasww")
+                console.log("speedX",(player.dataset.speedX));
+                console.log("speedY",(player.dataset.speedY));
+                console.log("targetX",(targetX));
+                console.log("targetY",(targetY));
 
+                targetX += parseInt(1);
+                targetY -= parseInt(2);
+                console.log("targetX",(targetX));
+                console.log("targetY",(targetY));
+            }
             player.style.top = targetY + "px";
             player.style.left = targetX + "px";
         }

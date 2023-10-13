@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        html{
+            margin: 0 0 ;
+        }
+        body{
+            margin: 0 0 ;
+        }
+        .map{
+            background-color: orangered;
+            height: 100vh;
+            width:100vw;
+        }
+        .pion{
+            height: 10px;
+            width: 10px;
+            background-color: blue;
+            border-radius: 50px;
+            position:absolute;
+            top:50%;
+            left:50%;
+            transform: translate(-50%,-50%);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="map">
+        <div id="pio" class="pion">
+        </div>
+    </div>
+
+
+    
+</body>
+<script>
+        let goHaut=false;
+        let goBas=false;
+        let goDroite=false;
+        let goGauche=false;
+
+
+        let keysPressed = {};
+
+document.addEventListener('keydown', (event) => {
+   keysPressed[event.key] = true;
+   //console.log("keysPressed",keysPressed);
+   if(keysPressed.a===true ){
+    console.log("prout gauche")
+    goGauche=true;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+   }
+   if(keysPressed.d===true ){
+    console.log("prout droite")
+    goDroite=true;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+   }
+   if(keysPressed.w===true ){
+    console.log("prout haut")
+    goHaut=true;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+   }
+   if(keysPressed.s===true ){
+    console.log("prout bas")
+    goBas=true;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+   }
+
+});
+document.addEventListener('keyup', (event) => {
+   keysPressed[event.key] = false;
+  // console.log("keysPressed",keysPressed)
+   if(keysPressed.w===false){
+    goHaut=false;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+   }
+   if(keysPressed.s===false){
+    goBas=false;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+}
+if(keysPressed.d===false){
+    goDroite=false;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+}
+if(keysPressed.a===false){
+    goGauche=false;
+    fcMouvement(goHaut,goBas,goGauche,goDroite)
+
+}
+});
+
+
+    fcMouvement=function(haut,bas,gauche,droite){
+        let Pion = document.getElementById("pio");
+        let posPion = Pion.getBoundingClientRect();
+        let screenWidth= screen.width;
+        let screenHeight= screen.height;
+     //   console.log("screenWidth",screenWidth)
+     //   console.log("screenHeight",screenHeight)
+
+
+
+
+                // pense a mettre la map aulieu du screen 
+
+                // PROUT
+
+        let vitesseX = ((parseInt(screen.width)/100)*1);
+        let vitesseY = ((parseInt(screen.height)/100)*1);
+
+        //   console.log("vitesseX",vitesseX)
+        //   console.log("vitesseY",vitesseY)
+        let posX =  posPion.left;
+        //   console.log("posX",posX)
+        let posY = posPion.top;
+        //   console.log("posY",posY)
+
+
+
+       // posX=posX+vitesseX;
+       // console.log(" new posX", posX)
+       // Pion.style.left=((posX+Pion.offsetWidth))+"px";
+
+
+
+        if(haut && !gauche && !droite){
+            console.log("player move en haut")
+            console.log("vitesseY",vitesseY)
+
+            posY=posY-vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY))+"px";
+        }
+        if(bas  && !gauche && !droite){
+            console.log("player move en bas")
+            console.log("vitesseY",vitesseY)
+
+            posY=posY+vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY+Pion.offsetHeight))+"px";
+        }
+        if(gauche && !haut && !bas){
+            console.log("player move a gauche")
+            console.log("vitesseX",vitesseX)
+
+            posX=posX-vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX))+"px";
+        }
+        if(droite && !haut && !bas){
+            console.log("player move a droite")
+            console.log("vitesseX",vitesseX)
+
+            posX=posX+vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX+Pion.offsetWidth))+"px";
+        }
+
+        if(haut && gauche){
+            console.log("player move diago haut droite")
+            console.log("vitesse de base Y",vitesseY)
+            vitesseY = vitesseY *0.2 ;
+            console.log("vitesse de diago Y",vitesseY)
+
+            posY=posY-vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY))+"px";
+
+            console.log("vitesse de base X",vitesseX)
+            vitesseX = vitesseX *0.2 ;
+            console.log("vitesse de diago X",vitesseX)
+            posX=posX-vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX))+"px";
+        }
+        if(haut && droite){
+            console.log("player move diago haut droite")
+            console.log("vitesse de base Y",vitesseY)
+            vitesseY = vitesseY *0.2 ;
+            console.log("vitesse de diago Y",vitesseY)
+
+            posY=posY-vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY))+"px";
+
+            console.log("vitesse de base X",vitesseX)
+            vitesseX = vitesseX *0.2 ;
+            console.log("vitesse de diago X",vitesseX)
+            posX=posX+vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX+Pion.offsetWidth))+"px";
+        }
+        if(bas && gauche){
+            console.log("player move diago bas gauche")
+            console.log("vitesse de base Y",vitesseY)
+            vitesseY = vitesseY *0.2 ;
+            console.log("vitesse de diago Y",vitesseY)
+
+            posY=posY+vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY+Pion.offsetHeight))+"px";
+
+            console.log("vitesse de base X",vitesseX)
+            vitesseX = vitesseX *0.2 ;
+            console.log("vitesse de diago X",vitesseX)
+            posX=posX-vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX))+"px";
+        }
+        if(bas && droite){
+            console.log("player move diago bas droite")
+            console.log("vitesse de base Y",vitesseY)
+            vitesseY = vitesseY *0.2 ;
+            console.log("vitesse de diago Y",vitesseY)
+
+            posY=posY+vitesseY;
+             console.log(" new posY", posY);
+            Pion.style.top=((posY+Pion.offsetHeight))+"px";
+
+            console.log("vitesse de base X",vitesseX)
+            vitesseX = vitesseX *0.2 ;
+            console.log("vitesse de diago X",vitesseX)
+            posX=posX+vitesseX;
+             console.log(" new posX", posX);
+            Pion.style.left=((posX+Pion.offsetWidth))+"px";
+        }
+
+/*
+        console.log("etat bascule haut", goHaut)
+        console.log("etat bascule bas", goBas)
+        console.log("etat bascule droite", goDroite)
+        console.log("etat bascule gauche", goGauche)
+*/
+    };
+
+
+
+</script>
+</html>
